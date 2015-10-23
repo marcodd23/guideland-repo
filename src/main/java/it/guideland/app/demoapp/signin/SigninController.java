@@ -1,4 +1,4 @@
-package it.guideland.app.signin;
+package it.guideland.app.demoapp.signin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

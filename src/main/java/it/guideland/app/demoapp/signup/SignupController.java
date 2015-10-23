@@ -1,4 +1,4 @@
-package it.guideland.app.signup;
+package it.guideland.app.demoapp.signup;
 
 import javax.validation.Valid;
 
@@ -9,8 +9,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.guideland.app.account.*;
-import it.guideland.app.support.web.*;
+import it.guideland.app.demoapp.account.*;
+import it.guideland.app.demoapp.support.web.*;
 
 @Controller
 public class SignupController {

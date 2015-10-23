@@ -1,4 +1,4 @@
-package it.guideland.app.error;
+package it.guideland.app.demoapp.error;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;

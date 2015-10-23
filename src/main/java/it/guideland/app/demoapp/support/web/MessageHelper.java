@@ -1,6 +1,6 @@
-package it.guideland.app.support.web;
+package it.guideland.app.demoapp.support.web;
 
-import static it.guideland.app.support.web.Message.MESSAGE_ATTRIBUTE;
+import static it.guideland.app.demoapp.support.web.Message.MESSAGE_ATTRIBUTE;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

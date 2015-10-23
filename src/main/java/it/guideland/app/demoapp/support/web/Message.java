@@ -1,4 +1,4 @@
-package it.guideland.app.support.web;
+package it.guideland.app.demoapp.support.web;
 
 /**
  * A message to be displayed in web context. Depending on the type, different style will be applied.

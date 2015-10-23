@@ -17,6 +17,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import it.guideland.app.demoapp.account.Account;
+import it.guideland.app.demoapp.account.AccountRepository;
+import it.guideland.app.demoapp.account.UserService;
+
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 

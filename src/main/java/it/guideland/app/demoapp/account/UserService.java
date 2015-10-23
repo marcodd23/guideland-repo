@@ -1,4 +1,4 @@
-package it.guideland.app.account;
+package it.guideland.app.demoapp.account;
 
 import java.util.Collections;
 

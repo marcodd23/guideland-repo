@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
-import it.guideland.app.account.UserService;
+import it.guideland.app.demoapp.account.UserService;
 
 @Configuration
 @EnableWebMvcSecurity

@@ -1,8 +1,8 @@
-package it.guideland.app.signup;
+package it.guideland.app.demoapp.signup;
 
 import org.hibernate.validator.constraints.*;
 
-import it.guideland.app.account.Account;
+import it.guideland.app.demoapp.account.Account;
 
 public class SignupForm {
 

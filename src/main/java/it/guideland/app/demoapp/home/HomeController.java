@@ -1,4 +1,4 @@
-package it.guideland.app.home;
+package it.guideland.app.demoapp.home;
 
 import java.security.Principal;
 

@@ -1,4 +1,4 @@
-package it.guideland.app.error;
+package it.guideland.app.demoapp.error;
 
 import java.text.MessageFormat;
 
