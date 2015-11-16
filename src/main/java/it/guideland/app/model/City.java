@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CITY")
+@Table(name = "CITIES")
 public class City implements Serializable{
 
 	/**
@@ -18,11 +18,13 @@ public class City implements Serializable{
 	private static final long serialVersionUID = 5790805178723293605L;
 	
 	@Id
-	@Column(name = "CITY_ID")
+	@Column(name = "city_id")
 	@GeneratedValue
 	private Long cityId;
+	
 	@Column(unique=true)
 	private String name;
+	
 	public Long getCityId() {
 		return cityId;
 	}
@@ -34,7 +36,5 @@ public class City implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	
+	}	
 }

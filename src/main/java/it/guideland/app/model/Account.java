@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ACCOUNT")
+@Table(name = "ACCOUNTS")
 public class Account implements Serializable{
 	
 	/**
@@ -21,16 +21,23 @@ public class Account implements Serializable{
 	private static final long serialVersionUID = 4700342434392039227L;
 	
 	@Id
-	@Column(name = "ACCOUNT_ID")
+	@Column(name = "account_id")
 	@GeneratedValue
 	private Long accountId;
+	
 	@OneToOne
-	@JoinColumn(name = "user_fk")
+	@JoinColumn(name = "user_fk", referencedColumnName = "user_id")
 	private User user;
+	
+	@Column(unique=true)
 	private String email;
+	
 	private String password;
+	
 	private Date lastLogin;
+	
 	private Date registrationDate;
+	
 	public Long getAccountId() {
 		return accountId;
 	}

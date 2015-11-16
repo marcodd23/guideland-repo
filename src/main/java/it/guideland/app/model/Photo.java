@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -20,16 +20,23 @@ public class Photo implements Serializable{
 	private static final long serialVersionUID = 398954632734305953L;
 	
 	@Id
-	@Column(name = "PHOTO_ID")
+	@Column(name = "photo_id")
 	@GeneratedValue
 	private int photoId;
+	
 	private String relativePath;
+	
 	private String fileName;
+	
 	//private String imagePath;
+	
 	private String contentType;	
 	
 	@Transient
 	private byte[] arrayByte;
+
+    @OneToOne(targetEntity = User.class, mappedBy = "profilePhoto")
+    private User user;
 
 	public int getPhotoId() {
 		return photoId;
@@ -69,6 +76,14 @@ public class Photo implements Serializable{
 
 	public void setArrayByte(byte[] arrayByte) {
 		this.arrayByte = arrayByte;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }

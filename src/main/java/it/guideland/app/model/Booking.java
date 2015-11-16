@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="BOOKINGS")
 public class Booking implements Serializable{
 
 	/**
@@ -17,18 +21,20 @@ public class Booking implements Serializable{
 	private static final long serialVersionUID = -107183963252039812L;
 	
 	@Id
-	@Column(name = "BOOKING_ID")
+	@Column(name = "booking_id")
 	@GeneratedValue
 	private Long bookingId;
 	
 	@ManyToOne
-	@JoinColumn(name="tourist_fk")
+	@JoinColumn(name="tourist_fk", referencedColumnName="tourist_id")
 	private Tourist tourist;
 	
 	@ManyToOne
-	@JoinColumn(name="guide_fk")
+	@JoinColumn(name="guide_fk", referencedColumnName= "guide_id")
 	private Guide guide;
+	
 	private Date date;
+	
 	public Long getBookingId() {
 		return bookingId;
 	}

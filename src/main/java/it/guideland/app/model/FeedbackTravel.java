@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="FEEDBACK_TRAVELS")
 public class FeedbackTravel implements Serializable{
 
 	/**
@@ -17,16 +21,20 @@ public class FeedbackTravel implements Serializable{
 	private static final long serialVersionUID = -909215937481677079L;
 	
 	@Id
-	@Column(name = "FEEDBACKTRAVEL_ID")
+	@Column(name = "feedbacktravels_id")
 	@GeneratedValue
 	private Long feedbackTravelId;
 	
-	@OneToOne
-	@JoinColumn(name = "travel_fk")
+	@OneToOne(targetEntity = Travel.class)
+	@JoinColumn(name = "travel_fk", referencedColumnName="travel_id")
 	private Travel travel;
+	
 	private Date date;
+	
 	private int score;
+	
 	private String review;
+	
 	public Long getFeedbackTravelId() {
 		return feedbackTravelId;
 	}
@@ -57,6 +65,4 @@ public class FeedbackTravel implements Serializable{
 	public void setReview(String review) {
 		this.review = review;
 	}
-	
-	
 }

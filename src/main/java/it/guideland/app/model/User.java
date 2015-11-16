@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,20 +22,27 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 4914191730785149204L;
 	
 	@Id
-	@Column(name = "USER_ID")
+	@Column(name = "user_id")
 	@GeneratedValue
 	private Long userId;
+	
 	private String name;
+	
 	private String surname;
-	private Date bornDay;
+	
+	private Date bornDate;
+	
 	private String sex;
+	
 	private String email;
+	
 	private String mobileNumber;
+	
 	private String skype;
 	
-	@OneToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
-	@JoinColumn(name="IMAGE_ID", nullable = true)
-	Photo profilePhoto;
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
+	@JoinColumn(name="photo_fk", referencedColumnName = "photo_id", nullable = true)
+	private Photo profilePhoto;
 
 	public Long getUserId() {
 		return userId;
@@ -62,12 +68,12 @@ public class User implements Serializable{
 		this.surname = surname;
 	}
 
-	public Date getBornDay() {
-		return bornDay;
+	public Date getBornDate() {
+		return bornDate;
 	}
 
-	public void setBornDay(Date bornDay) {
-		this.bornDay = bornDay;
+	public void setBornDate(Date bornDate) {
+		this.bornDate = bornDate;
 	}
 
 	public String getSex() {
@@ -109,5 +115,4 @@ public class User implements Serializable{
 	public void setProfilePhoto(Photo profilePhoto) {
 		this.profilePhoto = profilePhoto;
 	}
-	
 }
