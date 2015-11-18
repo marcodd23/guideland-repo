@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "INTERESTS", uniqueConstraints=@UniqueConstraint(columnNames = {"city", "interestDescription"}))
+@Table(name = "INTERESTS", uniqueConstraints=@UniqueConstraint(columnNames = {"city_fk", "interestDescription"}))
 public class Interest implements Serializable{
 
 	/**
@@ -27,9 +27,8 @@ public class Interest implements Serializable{
 		@Column(name="interest_id")
 		private Long interestId;	
 		
-	    @ManyToOne(targetEntity = City.class)
-	    @JoinColumn(name="city_fk", referencedColumnName="city_id")
-	    @Column(nullable=true)
+	    @ManyToOne(targetEntity = City.class, optional=true)
+	    @JoinColumn(name="city_fk", referencedColumnName="city_id", nullable=true)
 	    private City city;
 
 	    @ManyToOne(targetEntity = Guide.class, optional=true)
@@ -42,15 +41,19 @@ public class Interest implements Serializable{
 	    private InterestType interestType;
 
 	    @ManyToOne(targetEntity = Interest.class, optional=true)
-	    @Column(nullable=true)
+	    @JoinColumn(name="parent_interest_fk", referencedColumnName="interest_id", nullable=true)
 	    private Interest parentInterest;
 
 	    @Basic
 	    private String interesName;
+	    
+	    @Basic
+	    private int interestDescription;
 
 	    @Basic(optional=true)
 	    @Column(nullable=true)
 	    private int counter;
+	   
 	    
 		public enum InterestType {
 			GUIDE(1), 
@@ -67,65 +70,91 @@ public class Interest implements Serializable{
 			}
 		}
 
+
 		public Long getInterestId() {
 			return interestId;
 		}
+
 
 		public void setInterestId(Long interestId) {
 			this.interestId = interestId;
 		}
 
+
 		public City getCity() {
 			return city;
 		}
+
 
 		public void setCity(City city) {
 			this.city = city;
 		}
 
+
 		public Guide getGuide() {
 			return guide;
 		}
+
 
 		public void setGuide(Guide guide) {
 			this.guide = guide;
 		}
 
+
 		public int getScore() {
 			return score;
 		}
+
 
 		public void setScore(int score) {
 			this.score = score;
 		}
 
+
 		public InterestType getInterestType() {
 			return interestType;
 		}
+
 
 		public void setInterestType(InterestType interestType) {
 			this.interestType = interestType;
 		}
 
+
 		public Interest getParentInterest() {
 			return parentInterest;
 		}
+
 
 		public void setParentInterest(Interest parentInterest) {
 			this.parentInterest = parentInterest;
 		}
 
+
 		public String getInteresName() {
 			return interesName;
 		}
+
 
 		public void setInteresName(String interesName) {
 			this.interesName = interesName;
 		}
 
+
+		public int getInterestDescription() {
+			return interestDescription;
+		}
+
+
+		public void setInterestDescription(int interestDescription) {
+			this.interestDescription = interestDescription;
+		}
+
+
 		public int getCounter() {
 			return counter;
 		}
+
 
 		public void setCounter(int counter) {
 			this.counter = counter;
