@@ -21,7 +21,7 @@ import it.guideland.app.Guideland;
 //@ComponentScan(basePackageClasses = Guideland.class, excludeFilters = @Filter({Controller.class, Configuration.class}))
 @PropertySource("classpath:persistence.properties")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = Guideland.class)
+@EnableJpaRepositories(basePackages = "it.guideland.app.repositories")
 public class RootContextConfig {
 
 	@Bean(name = "transactionManager")
