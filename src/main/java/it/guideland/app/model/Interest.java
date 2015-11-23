@@ -38,7 +38,7 @@ public class Interest implements Serializable{
 	    @Column(nullable=true)
 	    private int score;
 
-	    private InterestType interestType;
+	    private String interestType;
 
 	    @ManyToOne(targetEntity = Interest.class, optional=true)
 	    @JoinColumn(name="parent_interest_fk", referencedColumnName="interest_id", nullable=true)
@@ -111,12 +111,12 @@ public class Interest implements Serializable{
 		}
 
 
-		public InterestType getInterestType() {
+		public String getInterestType() {
 			return interestType;
 		}
 
 
-		public void setInterestType(InterestType interestType) {
+		public void setInterestType(String interestType) {
 			this.interestType = interestType;
 		}
 

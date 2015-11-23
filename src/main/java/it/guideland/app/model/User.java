@@ -1,14 +1,19 @@
 package it.guideland.app.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,6 +48,13 @@ public class User implements Serializable{
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	@JoinColumn(name="photo_fk", referencedColumnName = "photo_id", nullable = true)
 	private Photo profilePhoto;
+	
+	private boolean enabled;
+	
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_fk", referencedColumnName = "user_id"),
+	inverseJoinColumns = @JoinColumn(name = "role_fk", referencedColumnName = "role_id"))
+	private List<Role> roles = new ArrayList<>();
 
 	public Long getUserId() {
 		return userId;
@@ -115,4 +127,21 @@ public class User implements Serializable{
 	public void setProfilePhoto(Photo profilePhoto) {
 		this.profilePhoto = profilePhoto;
 	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 }
