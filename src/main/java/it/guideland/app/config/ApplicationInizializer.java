@@ -10,7 +10,7 @@ import it.guideland.app.config.root.JpaTestConfiguration;
 import it.guideland.app.config.root.RootContextConfig;
 import it.guideland.app.config.servlet.ServletContextConfig;
 
-public class WebAppInizializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class ApplicationInizializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
