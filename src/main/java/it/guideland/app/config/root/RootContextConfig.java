@@ -13,8 +13,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import it.guideland.app.Guideland;
-
 @Configuration
 @ComponentScan({ "it.guideland.app.services", "it.guideland.app.security", "it.guideland.app.model",
 		"it.guideland.app.dao", "it.guideland.app.init" })

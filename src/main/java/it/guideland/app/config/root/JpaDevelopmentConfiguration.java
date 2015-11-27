@@ -21,7 +21,7 @@ import it.guideland.app.init.TestDataInitializer;
 @Profile("development")
 public class JpaDevelopmentConfiguration{
 	
-	Logger logger = LoggerFactory.getLogger(JpaDevelopmentConfiguration.class);
+	private Logger logger = LoggerFactory.getLogger(JpaDevelopmentConfiguration.class);
 	
     @Value("${dataSource.driverClassName}")
     private String driver;

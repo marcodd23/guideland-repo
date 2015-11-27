@@ -7,5 +7,5 @@ import it.guideland.app.repositories.repositoriesCustom.UserRepositoryCustom;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom{
 
-	
+	User findUserByUsername(String username);
 }

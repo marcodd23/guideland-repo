@@ -31,6 +31,12 @@ public class User implements Serializable{
 	@GeneratedValue
 	private Long userId;
 	
+	private String username;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "account_fk", referencedColumnName = "username")
+	private Account account;
+
 	private String name;
 	
 	private String surname;
@@ -47,14 +53,14 @@ public class User implements Serializable{
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	@JoinColumn(name="photo_fk", referencedColumnName = "photo_id", nullable = true)
-	private Photo profilePhoto;
-	
-	private boolean enabled;
+	private Photo profilePhoto;	
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_fk", referencedColumnName = "user_id"),
 	inverseJoinColumns = @JoinColumn(name = "role_fk", referencedColumnName = "role_id"))
 	private List<Role> roles = new ArrayList<>();
+	
+	private long loginExpireTime;
 
 	public Long getUserId() {
 		return userId;
@@ -62,6 +68,22 @@ public class User implements Serializable{
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public String getName() {
@@ -128,20 +150,20 @@ public class User implements Serializable{
 		this.profilePhoto = profilePhoto;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
 	public List<Role> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public long getLoginExpireTime() {
+		return loginExpireTime;
+	}
+
+	public void setLoginExpireTime(long loginExpireTime) {
+		this.loginExpireTime = loginExpireTime;
 	}
 
 }

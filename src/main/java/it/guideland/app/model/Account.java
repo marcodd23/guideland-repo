@@ -5,9 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -21,13 +19,13 @@ public class Account implements Serializable{
 	private static final long serialVersionUID = 4700342434392039227L;
 	
 	@Id
-	@Column(name = "account_id")
-	@GeneratedValue
-	private Long accountId;
+	@Column(name = "username")
+	private String username;
 	
-	@OneToOne
-	@JoinColumn(name = "user_fk", referencedColumnName = "user_id")
+	@OneToOne(mappedBy = "account")
 	private User user;
+	
+	private String userName;
 	
 	@Column(unique=true)
 	private String email;
@@ -37,42 +35,71 @@ public class Account implements Serializable{
 	private Date lastLogin;
 	
 	private Date registrationDate;
-	
-	public Long getAccountId() {
-		return accountId;
+
+	private boolean enabled;
+
+	public String getUsername() {
+		return username;
 	}
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public Date getLastLogin() {
 		return lastLogin;
 	}
+
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
 	}
+
 	public Date getRegistrationDate() {
 		return registrationDate;
 	}
+
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 }

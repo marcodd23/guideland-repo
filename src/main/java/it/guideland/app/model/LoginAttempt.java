@@ -30,7 +30,7 @@ public class LoginAttempt implements Serializable{
     private String counter;
 
     @ManyToOne(targetEntity = Account.class)
-    @JoinColumn(name="account_fk", referencedColumnName="account_id")
+    @JoinColumn(name="account_fk", referencedColumnName="username")
     private Account account;
 
 	public Long getLoginAttemptId() {
