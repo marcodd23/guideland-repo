@@ -11,8 +11,9 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,12 +29,10 @@ public class TokenManager {
 	private static final String SEPARATOR_SPLITTER = "\\.";
 	private static final long TEN_DAYS = 1000 * 60 * 60 * 24 * 10;
 
-	@Value("${token.secretkey}")
-	private String secretKey;
-
 	private final Mac hmac;
 
-	public TokenManager() {
+	@Autowired
+	public TokenManager(@Value("${token.secretkey}") String secretKey) {
 		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(secretKey);
 		try {
 			hmac = Mac.getInstance(HMAC_ALGO);

@@ -14,10 +14,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+//i parametri dei file di properties definiti da @PropertySource saranno visti all'interno di questi packages
 @ComponentScan({ "it.guideland.app.services", "it.guideland.app.security", "it.guideland.app.model",
 		"it.guideland.app.dao", "it.guideland.app.init" })
 //@ComponentScan(basePackageClasses = Guideland.class, excludeFilters = @Filter({Controller.class, Configuration.class}))
-@PropertySource("classpath:persistence.properties")
+@PropertySource({"classpath:persistence.properties", "classpath:security.properties"})
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "it.guideland.app.repositories")
 public class RootContextConfig {
