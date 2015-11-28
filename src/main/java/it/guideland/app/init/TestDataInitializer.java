@@ -62,24 +62,24 @@ public class TestDataInitializer {
 		
 		// ################ Account 1 ####################
 		Account account1 = accountBuilder.username("username-prova-1")
-										.email("pippo@sdfs.it")
-										.password(passwordEncoder.encode("password1"))
-										.registrationDate(new GregorianCalendar().getTime())
-										.enabled(true)
-										.build();
+				.email("pippo@sdfs.it")
+				.password(passwordEncoder.encode("password1"))
+				.registrationDate(new GregorianCalendar().getTime())
+				.enabled(true)
+				.build();
 		
 		
 		User user1 = userBuilder.account(account1)
-								.bornDate(new GregorianCalendar(1983, GregorianCalendar.APRIL, 23).getTime())
-								.email(account1.getEmail())
-								.mobileNumber("333-7687999")
-								.name("Marco")
-								.roles(user1Roles)
-								.sex("M")
-								.username(account1.getUsername())
-								.surname("Di Dionisio")
-								.skype("marco.didionisio")
-								.build();
+			 .bornDate(new GregorianCalendar(1983, GregorianCalendar.APRIL, 23).getTime())
+			 .email(account1.getEmail())
+			 .mobileNumber("333-7687999")
+			 .name("Marco")
+			 .roles(user1Roles)
+			 .sex("M")
+			 .username(account1.getUsername())
+			 .surname("Di Dionisio")
+			 .skype("marco.didionisio")
+		     .build();
 		
 		// ################ Account 2 ####################
 		Account account2 = accountBuilder.username("username-prova-2")
