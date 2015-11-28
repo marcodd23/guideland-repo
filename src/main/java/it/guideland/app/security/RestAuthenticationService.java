@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import it.guideland.app.dto.TokenData;
 import it.guideland.app.model.Role;
 import it.guideland.app.model.User;
 

@@ -14,53 +14,54 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "USERS")
-public class User implements Serializable{
-	
+public class User implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4914191730785149204L;
-	
+
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue
 	private Long userId;
-	
+
 	private String username;
-	
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "account_fk", referencedColumnName = "username")
+
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@JoinColumn(name = "account_fk", referencedColumnName = "account_id")
 	private Account account;
 
 	private String name;
-	
+
 	private String surname;
-	
+
 	private Date bornDate;
-	
+
 	private String sex;
-	
+
 	private String email;
-	
+
 	private String mobileNumber;
-	
+
 	private String skype;
-	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
-	@JoinColumn(name="photo_fk", referencedColumnName = "photo_id", nullable = true)
-	private Photo profilePhoto;	
-	
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_fk", referencedColumnName = "user_id"),
-	inverseJoinColumns = @JoinColumn(name = "role_fk", referencedColumnName = "role_id"))
+
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
+	@JoinColumn(name = "photo_fk", referencedColumnName = "photo_id", nullable = true)
+	private Photo profilePhoto;
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_fk", referencedColumnName = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_fk", referencedColumnName = "role_id") )
 	private List<Role> roles = new ArrayList<>();
-	
-	private long loginExpireTime;
 
 	public Long getUserId() {
 		return userId;
@@ -158,12 +159,81 @@ public class User implements Serializable{
 		this.roles = roles;
 	}
 
-	public long getLoginExpireTime() {
-		return loginExpireTime;
-	}
+	public static class UserBuilder {
+		private String username;
+		private Account account;
+		private String name;
+		private String surname;
+		private Date bornDate;
+		private String sex;
+		private String email;
+		private String mobileNumber;
+		private String skype;
+		private List<Role> roles;
 
-	public void setLoginExpireTime(long loginExpireTime) {
-		this.loginExpireTime = loginExpireTime;
-	}
+		public UserBuilder username(String username) {
+			this.username = username;
+			return this;
+		}
 
+		public UserBuilder account(Account account) {
+			this.account = account;
+			return this;
+		}
+
+		public UserBuilder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public UserBuilder surname(String surname) {
+			this.surname = surname;
+			return this;
+		}
+
+		public UserBuilder bornDate(Date bornDate) {
+			this.bornDate = bornDate;
+			return this;
+		}
+
+		public UserBuilder sex(String sex) {
+			this.sex = sex;
+			return this;
+		}
+
+		public UserBuilder email(String email) {
+			this.email = email;
+			return this;
+		}
+
+		public UserBuilder mobileNumber(String mobileNumber) {
+			this.mobileNumber = mobileNumber;
+			return this;
+		}
+
+		public UserBuilder skype(String skype) {
+			this.skype = skype;
+			return this;
+		}
+
+		public UserBuilder roles(List<Role> roles) {
+			this.roles = roles;
+			return this;
+		}
+
+		public User build() {
+			User user = new User();
+			user.setUsername(username);
+			user.setAccount(account);
+			user.setName(name);
+			user.setSurname(surname);
+			user.setBornDate(bornDate);
+			user.setSex(sex);
+			user.setEmail(email);
+			user.setMobileNumber(mobileNumber);
+			user.setSkype(skype);
+			user.setRoles(roles);
+			return user;
+		}
+	}
 }

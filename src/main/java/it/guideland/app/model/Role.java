@@ -26,11 +26,16 @@ public class Role implements Serializable{
 	@Column(name = "role_id")
 	private Long roleId;
 	
-	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "roles")
-	private List<User> users = new ArrayList<>();
+/*	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "roles")
+	private List<User> users = new ArrayList<>();*/
 	
 	private String role;
 	
+	public Role(String role) {
+		super();
+		this.role = role;
+	}
+
 	public enum RoleType {
 		USER("ROLE_USER"), 
 		ADMIN("ROLE_ADMIN");
@@ -53,14 +58,6 @@ public class Role implements Serializable{
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
-	}
-
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
 	}
 
 	public String getRole() {

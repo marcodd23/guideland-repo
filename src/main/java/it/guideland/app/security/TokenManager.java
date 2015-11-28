@@ -13,12 +13,12 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.guideland.app.dto.TokenData;
 import it.guideland.app.model.User;
 
 @Service
@@ -31,6 +31,9 @@ public class TokenManager {
 
 	private final Mac hmac;
 
+	//Ho definito @Value sul parametro del costruttore, per obbligare a iniettarlo prima che 
+	//venga eseguito il costruttore, altrimenti sarebbe stato null all' interno del costruttore
+	// e occorre anche mettere @Autowired
 	@Autowired
 	public TokenManager(@Value("${token.secretkey}") String secretKey) {
 		byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(secretKey);

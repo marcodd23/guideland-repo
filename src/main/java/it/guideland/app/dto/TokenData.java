@@ -1,4 +1,4 @@
-package it.guideland.app.security;
+package it.guideland.app.dto;
 
 import java.util.List;
 

@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import it.guideland.app.dto.TokenData;
+
 public class UserRestAuthentication extends AbstractAuthenticationToken{
 
 	/**
@@ -31,5 +33,9 @@ public class UserRestAuthentication extends AbstractAuthenticationToken{
 	public boolean isAuthenticated() {
 		return authenticated;
 	}
-	
+	@Override
+	public Object getDetails() {
+		return tokenData;
+	}
+
 }
