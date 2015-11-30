@@ -43,6 +43,11 @@ public class Account implements Serializable {
 	private Date registrationDate;
 
 	private boolean enabled;
+	
+	public Account() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getAccountId() {
 		return accountId;

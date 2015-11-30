@@ -11,6 +11,7 @@ import it.guideland.app.config.root.RootContextConfig;
 import it.guideland.app.config.security.AppSecurityConfig;
 import it.guideland.app.config.servlet.ServletContextConfig;
 
+
 public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
@@ -29,8 +30,11 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 	@Override
 	protected String[] getServletMappings() {
 		// TODO Auto-generated method stub
-		return new String[] { "/" };
+		return new String[] {"/"};
 	}
+
+	
+	
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {

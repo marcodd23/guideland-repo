@@ -23,7 +23,7 @@ public class UserRestAuthentication extends AbstractAuthenticationToken{
 	}
 	@Override
 	public Object getCredentials() {
-		return tokenData.getUsername();
+		return tokenData.getPassword();
 	}
 	@Override
 	public Object getPrincipal() {

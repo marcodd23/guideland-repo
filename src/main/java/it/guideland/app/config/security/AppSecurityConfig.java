@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import it.guideland.app.security.RestAuthenticationEntryPoint;
 import it.guideland.app.security.RestAuthenticationFilter;
 import it.guideland.app.security.RestAuthenticationService;
 import it.guideland.app.security.RestLoginFilter;
@@ -27,6 +28,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 	private RestAuthenticationService restAuthenticationService;
 	
 	@Autowired
+	private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+	
+	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 	
 	@Override
@@ -37,9 +41,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		
-		.formLogin().disable()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.exceptionHandling()
+			.authenticationEntryPoint(restAuthenticationEntryPoint)
+		.and()
+			.formLogin().disable()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
 			.exceptionHandling()
 		.and()
@@ -49,14 +55,15 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
 			.authorizeRequests()
 			
-			//allow anonymous resource requests
-			.antMatchers("/").permitAll()
+			.antMatchers("/private/hello").hasRole("USER")
+			//.antMatchers("/favicon.ico").permitAll()
+			.antMatchers("/resources/**").permitAll()
 		    
 			//allow anonymous POSTs to login
-		    .antMatchers(HttpMethod.POST, "/guideland/api/login").permitAll()
+		    .antMatchers(HttpMethod.POST, "/api/login").permitAll()
 		
 		    //allow anonymous GETs to API
-		    .antMatchers("/guideland/api/**").permitAll()
+		    .antMatchers("/api/**").permitAll()
 		    
 		    //defined Admin only API area
 			.antMatchers("/admin/**").hasRole("ADMIN")
@@ -66,7 +73,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 			
 		.and()
 			//Autenticazione -H X-Username: username" -H "X-Password
-			.addFilterBefore(new RestLoginFilter("/guideland/api/login", authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new RestLoginFilter("/api/login", authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
 			
 			// custom Token based authentication based on the header previously given to the client
 			.addFilterBefore(new RestAuthenticationFilter(restAuthenticationService), UsernamePasswordAuthenticationFilter.class);

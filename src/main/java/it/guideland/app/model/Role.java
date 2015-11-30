@@ -1,16 +1,14 @@
 package it.guideland.app.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ROLES")
@@ -24,6 +22,7 @@ public class Role implements Serializable{
 	@Id
 	@GeneratedValue
 	@Column(name = "role_id")
+	@JsonIgnore
 	private Long roleId;
 	
 /*	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "roles")
@@ -31,6 +30,11 @@ public class Role implements Serializable{
 	
 	private String role;
 	
+	public Role() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Role(String role) {
 		super();
 		this.role = role;
@@ -67,6 +71,5 @@ public class Role implements Serializable{
 	public void setRole(String role) {
 		this.role = role;
 	}
-
 
 }

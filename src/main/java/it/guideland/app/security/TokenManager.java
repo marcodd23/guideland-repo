@@ -11,6 +11,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import it.guideland.app.model.User;
 
 @Service
 public class TokenManager {
+	
+	Logger logger = LoggerFactory.getLogger(TokenManager.class);
 
 	private static final String HMAC_ALGO = "HmacSHA256";
 	private static final String SEPARATOR = ".";
@@ -63,6 +67,7 @@ public class TokenManager {
 	}
 
 	public TokenData validateUserFromToken(String token) {
+		logger.debug(">>>>>>>>>>>>>>>>>>> TokenManger.validateUserFromToken <<<<<<<<<<<<<<<<<<");
 		String[] parts = token.split(SEPARATOR_SPLITTER);
 		if (parts.length == 2 && parts[0].length() > 0 && parts[1].length() > 0) {
 
@@ -89,7 +94,7 @@ public class TokenManager {
 		return DatatypeConverter.parseBase64Binary(content);
 	}
 
-	private byte[] createHmac(byte[] userTokenDataBytes) {
+	private synchronized byte[] createHmac(byte[] userTokenDataBytes) {
 		return hmac.doFinal(userTokenDataBytes);
 	}
 

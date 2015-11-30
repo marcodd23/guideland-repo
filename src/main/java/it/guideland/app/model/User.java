@@ -13,10 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -54,7 +54,16 @@ public class User implements Serializable {
 	private String mobileNumber;
 
 	private String skype;
+	
+	@Transient
+	@JsonIgnore
+	private String currentPassword;
+	
+	@Transient
+	@JsonIgnore
+	private String newPassword;
 
+	@JsonIgnore
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, orphanRemoval = true)
 	@JoinColumn(name = "photo_fk", referencedColumnName = "photo_id", nullable = true)
 	private Photo profilePhoto;
@@ -156,7 +165,38 @@ public class User implements Serializable {
 	}
 
 	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+		for (Role role : roles) {
+			this.roles.add(role);
+		}
+	}
+	
+	public String getCurrentPassword() {
+		return currentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		this.currentPassword = currentPassword;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+	
+	
+	public void grantRole(Role role) {
+		if(role != null){
+			roles.add(role);
+		}
+	}
+
+	public void revokeRole(Role role) {
+		if (roles != null) {
+			roles.remove(role);
+		}
 	}
 
 	public static class UserBuilder {

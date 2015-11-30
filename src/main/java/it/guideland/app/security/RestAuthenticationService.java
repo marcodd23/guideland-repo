@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +22,8 @@ import it.guideland.app.model.User;
 @Service
 public class RestAuthenticationService {
 
+	Logger logger = LoggerFactory.getLogger(RestAuthenticationService.class);
+	
 	private static final String HEADER_TOKEN = "X-Auth-Token";
 
 	/*
@@ -43,9 +47,12 @@ public class RestAuthenticationService {
 	}
 
 	public Authentication getAuthentication(HttpServletRequest request) {
+		logger.debug(">>>>>>>>>>>>>>>>>>>> RestAuthenticationService.getAuthentication <<<<<<<<<<<<<<<<<<<< ");
 		String token = request.getHeader(HEADER_TOKEN);
+		TokenData tokenData = null;
 		if (token != null) {
-			TokenData tokenData = tokenManager.validateUserFromToken(token);
+			logger.debug(" Token is NOT null ....");
+			tokenData = tokenManager.validateUserFromToken(token);
 			if (tokenData != null) {
 				return new UserRestAuthentication(getAuthoritiesFromTokenData(tokenData), tokenData);
 			}
