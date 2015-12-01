@@ -14,13 +14,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.guideland.app.config.root.JpaDevelopmentConfiguration;
 import it.guideland.app.config.root.RootContextConfig;
+import it.guideland.app.config.security.AppSecurityConfig;
 import it.guideland.app.config.servlet.ServletContextConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("development")
 @WebAppConfiguration
 @ContextConfiguration(classes = { RootContextConfig.class, JpaDevelopmentConfiguration.class,
-		ServletContextConfig.class })
+		ServletContextConfig.class, AppSecurityConfig.class})
 public class WebAppConfigurationAware {
 	@Inject
 	protected WebApplicationContext webApplicationContext;

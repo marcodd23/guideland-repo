@@ -3,6 +3,8 @@ package it.guideland.app.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,12 +19,15 @@ import it.guideland.app.repositories.UserRepository;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+	Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+	
 	@Autowired
 	private UserRepository userRepo;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+		logger.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UserDetailsServiceImpl.loadUserByUsername >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		User user;
 		user = userRepo.findUserByUsername(username);
 		if (user == null) {

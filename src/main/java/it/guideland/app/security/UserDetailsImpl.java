@@ -17,17 +17,25 @@ public class UserDetailsImpl implements UserDetails{
 	
 	private User user;
 	private List<GrantedAuthority> authorities;
+	private boolean notLocked;
+	private boolean notExpired;
+	private boolean enabled;
 	
 	public UserDetailsImpl(User user, List<GrantedAuthority> authorities) {
 		super();
 		this.user = user;
 		this.authorities = authorities;
+		this.notLocked = user.getAccount().isNotLocked();
+		this.notExpired = user.getAccount().isNotExpired();
+		this.enabled = user.getAccount().isEnabled();
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.authorities;
 	}
+	
+	
 	
 /*	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -51,26 +59,23 @@ public class UserDetailsImpl implements UserDetails{
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.notExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.notLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.notExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return user.getAccount().isEnabled();
+		return this.enabled;
 	}
 
 	public User getUser() {

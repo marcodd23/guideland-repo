@@ -14,8 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import it.guideland.app.security.RestAuthenticationEntryPoint;
+import it.guideland.app.security.RestAuthenticationFailureHandler;
 import it.guideland.app.security.RestAuthenticationFilter;
 import it.guideland.app.security.RestAuthenticationService;
+import it.guideland.app.security.RestAuthenticationSuccessHandler;
 import it.guideland.app.security.RestLoginFilter;
 import it.guideland.app.security.UserDetailsServiceImpl;
 
@@ -44,6 +46,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 			.exceptionHandling()
 			.authenticationEntryPoint(restAuthenticationEntryPoint)
 		.and()
+			.csrf().disable()
 			.formLogin().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
@@ -61,6 +64,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 		    
 			//allow anonymous POSTs to login
 		    .antMatchers(HttpMethod.POST, "/api/login").permitAll()
+		    
+		    .antMatchers(HttpMethod.GET, "/api/login").denyAll()
 		
 		    //allow anonymous GETs to API
 		    .antMatchers("/api/**").permitAll()
@@ -73,7 +78,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 			
 		.and()
 			//Autenticazione -H X-Username: username" -H "X-Password
-			.addFilterBefore(new RestLoginFilter("/api/login", authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(
+						new RestLoginFilter("/api/login", authenticationManagerBean(),
+								restAuthenticationFailureHandlerBean(), RestAuthenticationSuccessHandlerBean(), restAuthenticationService, userDetailsServiceImplBean()), UsernamePasswordAuthenticationFilter.class)
 			
 			// custom Token based authentication based on the header previously given to the client
 			.addFilterBefore(new RestAuthenticationFilter(restAuthenticationService), UsernamePasswordAuthenticationFilter.class);
@@ -92,6 +99,19 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 		return super.authenticationManagerBean();
 	}
 	
+	@Bean(name="restAuthenticationSuccessHandler")
+	public RestAuthenticationSuccessHandler RestAuthenticationSuccessHandlerBean(){
+		return new RestAuthenticationSuccessHandler();
+	}
 	
+	@Bean(name="restAuthenticationFailureHandler")
+	public RestAuthenticationFailureHandler restAuthenticationFailureHandlerBean() {
+		return new RestAuthenticationFailureHandler();
+	}
+	
+	@Bean(name = "userDetailsServiceImpl") 
+	public UserDetailsServiceImpl userDetailsServiceImplBean(){
+		return new UserDetailsServiceImpl();
+	}
 	
 }

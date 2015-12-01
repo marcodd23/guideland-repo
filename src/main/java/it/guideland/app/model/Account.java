@@ -25,13 +25,13 @@ public class Account implements Serializable {
 	@Column(name = "account_id")
 	@GeneratedValue
 	private Long accountId;
-	
+
 	@Column(unique = true)
 	private String username;
 
 	/*	@OneToOne(mappedBy = "account")
 		private User user;*/
-	
+
 	@Column(unique = true)
 	private String email;
 
@@ -42,8 +42,14 @@ public class Account implements Serializable {
 
 	private Date registrationDate;
 
-	private boolean enabled;
-	
+	private boolean enabled = true;
+
+	@Column(name = "not_locked")
+	private boolean notLocked = true;
+
+	@Column(name = "not_expired")
+	private boolean notExpired = true;
+
 	public Account() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -105,12 +111,30 @@ public class Account implements Serializable {
 		this.enabled = enabled;
 	}
 
+	public boolean isNotLocked() {
+		return notLocked;
+	}
+
+	public void setNotLocked(boolean notLocked) {
+		this.notLocked = notLocked;
+	}
+
+	public boolean isNotExpired() {
+		return notExpired;
+	}
+
+	public void setNotExpired(boolean notExpired) {
+		this.notExpired = notExpired;
+	}
+
 	public static class AccountBuilder {
 		private String username;
 		private String email;
 		private String password;
 		private Date registrationDate;
 		private boolean enabled;
+		private boolean notLocked;
+		private boolean notExpired;
 
 		public AccountBuilder username(String username) {
 			this.username = username;
@@ -137,6 +161,16 @@ public class Account implements Serializable {
 			return this;
 		}
 
+		public AccountBuilder notLocked(boolean notLocked) {
+			this.notLocked = notLocked;
+			return this;
+		}
+
+		public AccountBuilder notExpired(boolean notExpired) {
+			this.notExpired = notExpired;
+			return this;
+		}
+
 		public Account build() {
 			return new Account(this);
 		}
@@ -148,5 +182,7 @@ public class Account implements Serializable {
 		this.password = builder.password;
 		this.registrationDate = builder.registrationDate;
 		this.enabled = builder.enabled;
+		this.notLocked = builder.notLocked;
+		this.notExpired = builder.notExpired;
 	}
 }

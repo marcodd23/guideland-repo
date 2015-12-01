@@ -73,7 +73,7 @@ public class JpaDevelopmentConfiguration{
     	Properties jpaProperties = new Properties();
     	jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
     	jpaProperties.put("hibernate.hbm2ddl.auto", "create-drop");
-        jpaProperties.put("hibernate.show_sql", "true");
+        jpaProperties.put("hibernate.show_sql", "false");
         jpaProperties.put("hibernate.format_sql", "true");
         jpaProperties.put("hibernate.use_sql_comments", "true");
         entityManagerFactoryBean.setJpaProperties(jpaProperties);

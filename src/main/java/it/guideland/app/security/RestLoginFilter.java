@@ -19,35 +19,39 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 
-public class RestLoginFilter extends AbstractAuthenticationProcessingFilter{
-	
+public class RestLoginFilter extends AbstractAuthenticationProcessingFilter {
+
 	Logger logger = LoggerFactory.getLogger(RestLoginFilter.class);
-	
+
 	private static final String HEADER_USERNAME = "X-Username";
 	private static final String HEADER_PASSWORD = "X-Password";
-	
+
 	@Autowired
 	private RestAuthenticationService restAuthenticationService;
-	
-	@Autowired
-	private UserDetailsService userDetailsService;
-		
-	public RestLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
-		super(defaultFilterProcessesUrl);
-		//this.restAuthenticationService = restAuthenticationService;
-		//this.userDetailsService = userDetailsService;
-		setAuthenticationManager(authenticationManager);
-	}
 
+	@Autowired
+	private UserDetailsServiceImpl userDetailsServiceImpl;
+
+	public RestLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager,
+			RestAuthenticationFailureHandler restAuthenticationFailureHandler, RestAuthenticationSuccessHandler restAuthenticationSuccessHandler, RestAuthenticationService restAuthenticationService,
+			UserDetailsServiceImpl userDetailsServiceImpl) {
+		super(defaultFilterProcessesUrl);
+		// this.restAuthenticationService = restAuthenticationService;
+		// this.userDetailsService = userDetailsService;
+		setAuthenticationManager(authenticationManager);
+		setAuthenticationFailureHandler(restAuthenticationFailureHandler);
+		setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
+		this.restAuthenticationService = restAuthenticationService;
+		this.userDetailsServiceImpl = userDetailsServiceImpl;
+	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
-		
+
 		logger.debug(">>>>>>>>>>>>>>>>>>>>>> RestLoginFilter.attempthAuthentication <<<<<<<<<<<<<<<<<<<<<<");
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		String username = request.getHeader(HEADER_USERNAME);
@@ -56,23 +60,23 @@ public class RestLoginFilter extends AbstractAuthenticationProcessingFilter{
 		if (authorization != null) {
 			loginToken = checkBasicAuthorization(authorization, response);
 		} else if (username != null && password != null) {
-			loginToken = new UsernamePasswordAuthenticationToken(username, password);			
+			loginToken = new UsernamePasswordAuthenticationToken(username, password);
 		}
 		return getAuthenticationManager().authenticate(loginToken);
 	}
 
+	private UsernamePasswordAuthenticationToken checkBasicAuthorization(String authorization,
+			HttpServletResponse response) {
 
-	private UsernamePasswordAuthenticationToken checkBasicAuthorization(String authorization, HttpServletResponse response) {
-		
 		logger.debug(">>>>>>>>>>>>>>>>>>>>>> RestLoginFilter.checkBasicAuthorization <<<<<<<<<<<<<<<<<<<<<<");
 		StringTokenizer tokenizer = new StringTokenizer(authorization);
 		UsernamePasswordAuthenticationToken loginToken;
-		
-		if(tokenizer.countTokens() < 2 || !tokenizer.nextToken().equalsIgnoreCase("Basic")){
+
+		if (tokenizer.countTokens() < 2 || !tokenizer.nextToken().equalsIgnoreCase("Basic")) {
 			loginToken = new UsernamePasswordAuthenticationToken(null, null);
 			return loginToken;
 		}
-		
+
 		String base64 = tokenizer.nextToken();
 		String usernameAndPassword = new String(Base64.decode(base64.getBytes(StandardCharsets.UTF_8)));
 		tokenizer = new StringTokenizer(usernameAndPassword, ":");
@@ -82,24 +86,22 @@ public class RestLoginFilter extends AbstractAuthenticationProcessingFilter{
 		return loginToken;
 	}
 
-
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authentication) throws IOException, ServletException {
-		
+
 		logger.debug(">>>>>>>>>>>>>>>>>>>>>> RestLoginFilter.successfulAuthentication <<<<<<<<<<<<<<<<<<<<<<");
-		UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(authentication.getName());
+		UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsServiceImpl.loadUserByUsername(authentication.getName());
 		restAuthenticationService.addAuthenticationToken(response, userDetails);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+		getSuccessHandler().onAuthenticationSuccess(request, response, authentication);
 	}
 
-
-	@Override
+/*	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		super.unsuccessfulAuthentication(request, response, failed);
-	}
-	
+	}*/
 
 }

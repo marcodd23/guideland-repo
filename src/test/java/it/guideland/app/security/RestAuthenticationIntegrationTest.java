@@ -1,131 +1,106 @@
 package it.guideland.app.security;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.nio.charset.StandardCharsets;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.codec.Base64;
+import org.springframework.test.web.servlet.MvcResult;
 
 import it.guideland.app.config.WebSecurityConfigurationAware;
 
-
-public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationAware{
+public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationAware {
 
 	Logger logger = LoggerFactory.getLogger(RestAuthenticationIntegrationTest.class);
 	
-	// GET RESOURCES
-
-
+	private static final String HEADER_USERNAME = "X-Username";
+	private static final String HEADER_PASSWORD = "X-Password";
+	private static final String HEADER_TOKEN = "X-Auth-Token";
 	
-	
-	
-	
-	
-
-	// GET OWN USER DETAILS
-
-	/*@Test
-	public void testUserApi_Get_Anonymous() {
-		final String result = doAnonymousExchange(HttpMethod.GET, "/api/users/current");
-		assertTrue(result.contains("\"username\":\"anonymousUser\""));
-		assertTrue(result.contains("\"roles\":[]"));
-	}
+	@Autowired
+	private TokenManager tokenManager;
 
 	@Test
-	public void testUserApi_Get_User() {
-		final String result = doAuthenticatedExchange("user", HttpMethod.GET, "/api/users/current");
-		assertTrue(result.contains("\"username\":\"user\""));
-		assertTrue(result.contains("\"roles\":[\"USER\"]"));
+	public void postLoginWithWrongCredentialsAuthorizationHeaderTest() throws Exception {
+		mockMvc.perform(post("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "incorrectpassword"))
+				).andExpect(status().isUnauthorized());
 	}
+
+	
+	@Test
+	public void getLoginWithWrongCredentialsAuthorizationHeaderTest() throws Exception {
+		mockMvc.perform(get("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "incorrectpassword"))
+				).andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void postLoginWithWrongCredentialsUsernamPasswordHeaderTest() throws Exception {
+		mockMvc.perform(post("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HEADER_USERNAME, "username-prova-1")
+				.header(HEADER_PASSWORD, "incorrectpassword")
+				).andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	public void getLoginWithWrongCredentialsUsernamPasswordHeaderTest() throws Exception {
+		mockMvc.perform(get("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HEADER_USERNAME, "username-prova-1")
+				.header(HEADER_PASSWORD, "incorrectpassword")
+				).andExpect(status().isUnauthorized());
+	}
+	//============================================ CORRECT LOGINS ===========================================
+	
 
 	@Test
-	public void testUserApi_Get_Admin() {
-		final String result = doAuthenticatedExchange("admin", HttpMethod.GET, "/api/users/current");
-		assertTrue(result.contains("\"username\":\"admin\""));
-		assertTrue(result.contains("\"roles\":[\"ADMIN\"]"));
+	public void postLoginWithCorrectCredentialsAuthorizationHeaderTest() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(post("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "password1"))
+				).andReturn();
+		Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+        String token = mvcResult.getResponse().getHeader(HEADER_TOKEN);
+		Assert.assertNotNull(token);
+		if(token != null){
+			Assert.assertNotNull(tokenManager.validateUserFromToken(token));
+		}
 	}
-
-	// GET ALL USER DETAILS (ADMIN FUNCTIONALITY)
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_Get_Users_AsAnonymous() {
-		doAnonymousExchange(HttpMethod.GET, "/admin/api/users");
-	}
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_Get_Users_AsUser() {
-		doAuthenticatedExchange("user", HttpMethod.GET, "/admin/api/users");
-	}
-
+	
 	@Test
-	public void testAdminApi_Get_Users_AsAdmin() {
-		final String result = doAuthenticatedExchange("admin", HttpMethod.GET, "/admin/api/users");
-		assertEquals("[{\"id\":10,\"username\":\"admin\",\"expires\":0,\"roles\":[\"ADMIN\"]}"
-				+ ",{\"id\":11,\"username\":\"user\",\"expires\":0,\"roles\":[\"USER\"]}]", result);
+	public void getLoginWithCorrectCredentialsAuthorizationHeaderTest() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "password1"))
+				).andReturn();
+		Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+        String token = mvcResult.getResponse().getHeader(HEADER_TOKEN);
+		Assert.assertNotNull(token);
+		if(token != null){
+			Assert.assertNotNull(tokenManager.validateUserFromToken(token));
+		}
 	}
 
-	// GRANT A ROLE TO A USER (ADMIN FUNCTIONALITY)
+	private String createAuthorizationHeader(String username, String password) {
 
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_GrantRole_AsAnonymous() {
-		doAnonymousExchange(HttpMethod.POST, "/admin/api/users/11/grant/role/ADMIN");
-	}
-
-	@Test(expected = HttpClientErrorException.class)
-	public void testAdminApi_GrantRole_AsUser() {
-		doAuthenticatedExchange("user", HttpMethod.POST, "/admin/api/users/11/grant/role/ADMIN");
-	}
-
-	@Test
-	public void testAdminApi_GrantRole_AsAdmin() {
-		doAuthenticatedExchange("admin", HttpMethod.POST, "/admin/api/users/11/grant/role/ADMIN");
-		doAuthenticatedExchange("admin", HttpMethod.POST, "/admin/api/users/11/revoke/role/ADMIN");
-	}*/
-
-/*	private String doAnonymousExchange(final HttpMethod method, final String path) {
-		return doAnonymousExchange(method, path, null);
-	}
-
-	private String doAnonymousExchange(final HttpMethod method, final String path, String request) {
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> testRequest = new HttpEntity<>(request, httpHeaders);
-		HttpEntity<String> testResponse = restTemplate.exchange("http://localhost:8080/guideland" + path, method, testRequest,
-				String.class);
-		return testResponse.getBody();
-	}*/
-
-	/*
-		private String doAuthenticatedExchange(final String user, final HttpMethod method, final String path) {
-		return doAuthenticatedExchange(user, method, path, null, user);
-	}
-
-	private String doAuthenticatedExchange(final String user, final HttpMethod method, final String path,
-			String request, String password) {
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-		String basicAuth = createAuthorizationHeader(user, password);
-		httpHeaders.set("Authorization", basicAuth);
-		HttpEntity<String> login = new HttpEntity<>(
-				"{\"username\":\"" + user + "\",\"password\":\"" + password + "\"}", httpHeaders);
-		ResponseEntity<Void> results = restTemplate.postForEntity("http://localhost:8080/guideland/api/login", login, Void.class);
-
-		httpHeaders.add("X-AUTH-TOKEN", results.getHeaders().getFirst("X-AUTH-TOKEN"));
-		HttpEntity<String> testRequest = new HttpEntity<>(request, httpHeaders);
-		HttpEntity<String> testResponse = restTemplate.exchange("http://localhost:8080/guideland/" + path, method, testRequest,
-				String.class);
-		return testResponse.getBody();
-	}*/
-	
-	
-	
-	private String createAuthorizationHeader(String username, String password){
-		
 		String userCredentials = username + ":" + password;
-		String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes(StandardCharsets.UTF_8)));
+		//new Base64();
+		String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(StandardCharsets.UTF_8)));
 		return basicAuth;
 	}
-	
+
 }

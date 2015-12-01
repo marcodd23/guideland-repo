@@ -66,6 +66,8 @@ public class TestDataInitializer {
 				.password(passwordEncoder.encode("password1"))
 				.registrationDate(new GregorianCalendar().getTime())
 				.enabled(true)
+				.notExpired(true)
+				.notLocked(true)
 				.build();
 		
 		
@@ -87,6 +89,8 @@ public class TestDataInitializer {
 				.password(passwordEncoder.encode("password2"))
 				.registrationDate(new GregorianCalendar().getTime())
 				.enabled(true)
+				.notExpired(true)
+				.notLocked(true)
 				.build();
 
 
