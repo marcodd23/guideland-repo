@@ -18,14 +18,15 @@ import org.springframework.security.crypto.codec.Base64;
 import org.springframework.test.web.servlet.MvcResult;
 
 import it.guideland.app.config.WebSecurityConfigurationAware;
+import it.guideland.app.utility.TestUtility;
 
 public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationAware {
 
 	Logger logger = LoggerFactory.getLogger(RestAuthenticationIntegrationTest.class);
 	
-	private static final String HEADER_USERNAME = "X-Username";
+/*	private static final String HEADER_USERNAME = "X-Username";
 	private static final String HEADER_PASSWORD = "X-Password";
-	private static final String HEADER_TOKEN = "X-Auth-Token";
+	private static final String HEADER_TOKEN = "X-Auth-Token";*/
 	
 	@Autowired
 	private TokenManager tokenManager;
@@ -37,7 +38,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void postLoginWithWrongCredentialsAuthorizationHeaderTest() throws Exception {
 		mockMvc.perform(post("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "incorrectpassword"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "incorrectpassword"))
 				).andExpect(status().isUnauthorized());
 	}
 
@@ -46,7 +47,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void getLoginWithWrongCredentialsAuthorizationHeaderTest() throws Exception {
 		mockMvc.perform(get("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "incorrectpassword"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "incorrectpassword"))
 				).andExpect(status().isUnauthorized());
 	}
 	
@@ -74,7 +75,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void postLoginWithCorrectCredentialsAuthorizationHeaderTest() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(post("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "password1"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "password1"))
 				).andReturn();
 		Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
         String token = mvcResult.getResponse().getHeader(HEADER_TOKEN);
@@ -88,7 +89,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void getLoginWithCorrectCredentialsAuthorizationHeaderTest() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, createAuthorizationHeader("username-prova-1", "password1"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "password1"))
 				).andReturn();
 		Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
         String token = mvcResult.getResponse().getHeader(HEADER_TOKEN);
@@ -115,12 +116,12 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	}
 	
 
-	private String createAuthorizationHeader(String username, String password) {
+/*	private String createAuthorizationHeader(String username, String password) {
 
 		String userCredentials = username + ":" + password;
 		//new Base64();
 		String basicAuth = "Basic " + new String(Base64.encode(userCredentials.getBytes(StandardCharsets.UTF_8)));
 		return basicAuth;
-	}
+	}*/
 
 }

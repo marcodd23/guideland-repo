@@ -31,8 +31,8 @@ public class UserController {
 		return ">>>> TUTTO OK!!!! <<<<<<";
 	}
 	
-	@RequestMapping(value = "/api/users/current", method = RequestMethod.GET)
-	public User getCurrent() {
+	@RequestMapping(value = "/api/user/current", method = RequestMethod.GET)
+	public ResponseEntity<User> getCurrent() {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = null;
 		if (authentication instanceof UserRestAuthentication) {
@@ -40,7 +40,7 @@ public class UserController {
 			user = userRepo.findUserByUsername(tokenData.getUsername());
 		}
 		//return new User(authentication.getName()); //anonymous user support
-		return user;
+		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/api/users/current", method = RequestMethod.PATCH)
