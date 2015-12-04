@@ -36,17 +36,17 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 	
 	
 
-	@Override
+	/*@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		// TODO Auto-generated method stub
 		super.onStartup(servletContext);
 
 		// per settare il profilo attivo
-		servletContext.setInitParameter("spring.profiles.active", "development");
+		servletContext.setInitParameter("spring.profiles.active", "test");
 
 		// Set multiple active profile
 		// servletContext.setInitParameter("spring.profiles.active",
 		// "development, testdb");
-	}
+	}*/
 
 }

@@ -54,7 +54,9 @@ public class RestAuthenticationService {
 			logger.debug(" Token is NOT null ....");
 			tokenData = tokenManager.validateUserFromToken(token);
 			if (tokenData != null) {
-				return new UserRestAuthentication(getAuthoritiesFromTokenData(tokenData), tokenData);
+				return new UserRestAuthentication(getAuthoritiesFromTokenData(tokenData), tokenData, true);
+			}else{
+				return new UserRestAuthentication(getAuthoritiesFromTokenData(tokenData), tokenData, false);
 			}
 		}
 		return null;

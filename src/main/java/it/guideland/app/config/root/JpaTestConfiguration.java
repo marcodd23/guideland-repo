@@ -23,7 +23,7 @@ import it.guideland.app.init.TestDataInitializer;
 @Profile("test")
 public class JpaTestConfiguration {
 	
-	Logger logger = LoggerFactory.getLogger(JpaTestConfiguration.class);
+	private Logger logger = LoggerFactory.getLogger(JpaTestConfiguration.class);
 	
 	
     @Value("${dataSourceEmbedded.driverClassName}")

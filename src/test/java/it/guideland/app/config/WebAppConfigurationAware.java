@@ -12,15 +12,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.guideland.app.config.root.JpaDevelopmentConfiguration;
+import it.guideland.app.config.root.JpaTestConfiguration;
 import it.guideland.app.config.root.RootContextConfig;
 import it.guideland.app.config.security.AppSecurityConfig;
 import it.guideland.app.config.servlet.ServletContextConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("development")
+@ActiveProfiles("test")
 @WebAppConfiguration
-@ContextConfiguration(classes = { RootContextConfig.class, JpaDevelopmentConfiguration.class,
+@ContextConfiguration(classes = { RootContextConfig.class, JpaTestConfiguration.class,
 		ServletContextConfig.class, AppSecurityConfig.class})
 public class WebAppConfigurationAware {
 	@Inject

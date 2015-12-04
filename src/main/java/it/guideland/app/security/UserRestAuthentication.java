@@ -21,6 +21,14 @@ public class UserRestAuthentication extends AbstractAuthenticationToken{
 		super(authorities);
 		this.tokenData = tokenData;
 	}
+	
+	public UserRestAuthentication(Collection<? extends GrantedAuthority> authorities, TokenData tokenData,
+			boolean authenticated) {
+		super(authorities);
+		this.tokenData = tokenData;
+		this.authenticated = authenticated;
+	}
+
 	@Override
 	public Object getCredentials() {
 		return tokenData.getPassword();

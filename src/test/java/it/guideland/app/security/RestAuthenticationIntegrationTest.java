@@ -30,6 +30,9 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	@Autowired
 	private TokenManager tokenManager;
 
+	//============================================ WRONG LOGINS ===========================================
+	
+	
 	@Test
 	public void postLoginWithWrongCredentialsAuthorizationHeaderTest() throws Exception {
 		mockMvc.perform(post("/api/login")
@@ -94,6 +97,23 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 			Assert.assertNotNull(tokenManager.validateUserFromToken(token));
 		}
 	}
+
+	//============================================ LOGINS with no header ===========================================
+	
+	@Test
+	public void postLoginWithNoHeaderTest() throws Exception {
+		mockMvc.perform(post("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				).andExpect(status().isUnauthorized());
+	}
+
+	@Test
+	public void getLoginWithNoHeaderTest() throws Exception {
+		mockMvc.perform(post("/api/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				).andExpect(status().isUnauthorized());
+	}
+	
 
 	private String createAuthorizationHeader(String username, String password) {
 
