@@ -30,7 +30,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 	@Override
 	protected String[] getServletMappings() {
 		// TODO Auto-generated method stub
-		return new String[] {"/"};
+		return new String[] {"/*"};
 	}
 
 	

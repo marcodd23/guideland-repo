@@ -21,6 +21,7 @@ import it.guideland.app.repositories.UserRepository;
 import it.guideland.app.security.UserRestAuthentication;
 
 @RestController
+@RequestMapping("/api/user")
 public class UserController {
 	
 	@Autowired
@@ -31,7 +32,7 @@ public class UserController {
 		return ">>>> TUTTO OK!!!! <<<<<<";
 	}
 	
-	@RequestMapping(value = "/api/user/current", method = RequestMethod.GET)
+	@RequestMapping(value = "/current", method = RequestMethod.GET)
 	public ResponseEntity<User> getCurrent() {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = null;
