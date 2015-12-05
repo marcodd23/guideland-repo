@@ -56,7 +56,7 @@ public class RestAuthenticationService {
 			if (tokenData != null) {
 				return new UserRestAuthentication(getAuthoritiesFromTokenData(tokenData), tokenData, true);
 			}else{
-				return new UserRestAuthentication(getAuthoritiesFromTokenData(tokenData), tokenData, false);
+				return new UserRestAuthentication(null, tokenData, false);
 			}
 		}
 		return null;

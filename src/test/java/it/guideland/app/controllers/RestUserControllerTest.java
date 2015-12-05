@@ -43,7 +43,7 @@ public class RestUserControllerTest extends WebSecurityConfigurationAware {
 			mockMvc.perform(
 					get("/api/user/current").contentType(MediaType.APPLICATION_JSON).header(HEADER_TOKEN, token))
 					.andExpect(status().is2xxSuccessful())
-					.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
+					.andExpect(MockMvcResultMatchers.content().contentType("application/json"))
 					.andExpect(MockMvcResultMatchers.jsonPath("$.username", Matchers.is(tokenData.getUsername())))
 					.andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Marco")))
 					.andExpect(MockMvcResultMatchers.jsonPath("$.surname", Matchers.is("Di Dionisio")))

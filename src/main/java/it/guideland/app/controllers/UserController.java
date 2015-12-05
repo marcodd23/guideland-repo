@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.guideland.app.dto.TokenData;
@@ -32,16 +34,19 @@ public class UserController {
 		return ">>>> TUTTO OK!!!! <<<<<<";
 	}
 	
-	@RequestMapping(value = "/current", method = RequestMethod.GET)
-	public ResponseEntity<User> getCurrent() {
+	@RequestMapping(value = "/current", method = RequestMethod.GET, produces="application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public User getCurrent() {
 		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = null;
 		if (authentication instanceof UserRestAuthentication) {
 			TokenData tokenData = (TokenData)((UserRestAuthentication) authentication).getDetails();
 			user = userRepo.findUserByUsername(tokenData.getUsername());
 		}
+		
 		//return new User(authentication.getName()); //anonymous user support
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		//return new ResponseEntity<User>(user, HttpStatus.OK);
+		return user;
 	}
 	
 	@RequestMapping(value = "/api/users/current", method = RequestMethod.PATCH)
