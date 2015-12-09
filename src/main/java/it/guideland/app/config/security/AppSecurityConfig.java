@@ -53,11 +53,17 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login").permitAll()
+				
+				.antMatchers(HttpMethod.POST, "/api/user/create").permitAll()
 
 				.antMatchers(HttpMethod.GET, "/api/login").denyAll()
 
 				// allow anonymous GETs to API
-				.antMatchers("/api/**").authenticated()
+				//.antMatchers("/api/**").authenticated()
+				
+				.antMatchers("/api/user/current").authenticated()
+				
+				.antMatchers("/api/user/create").permitAll()
 
 				// defined Admin only API area
 				.antMatchers("/admin/**").hasRole("ADMIN")

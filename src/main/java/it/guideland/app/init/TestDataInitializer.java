@@ -3,6 +3,7 @@ package it.guideland.app.init;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +18,7 @@ import it.guideland.app.model.Account;
 import it.guideland.app.model.Account.AccountBuilder;
 import it.guideland.app.model.Role;
 import it.guideland.app.model.Role.RoleType;
+import it.guideland.app.model.SupportedLanguage;
 import it.guideland.app.model.User;
 import it.guideland.app.model.User.UserBuilder;
 import it.guideland.app.repositories.RoleRepository;
@@ -56,14 +58,18 @@ public class TestDataInitializer {
 		List<Role> user2Roles = new ArrayList<>();
 		user2Roles.add(userRole);
 		
+		List<SupportedLanguage> langs = new ArrayList<>();
+		langs.add(new SupportedLanguage(Locale.ITALIAN.getLanguage(), "Italian"));
+		
 		UserBuilder userBuilder = new UserBuilder();
 		AccountBuilder accountBuilder = new AccountBuilder();
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		//PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		// ################ Account 1 ####################
 		Account account1 = accountBuilder.username("username-prova-1")
 				.email("pippo@sdfs.it")
-				.password(passwordEncoder.encode("password1"))
+				//.password(passwordEncoder.encode("password1"))
+				.password("password1")
 				.registrationDate(new GregorianCalendar().getTime())
 				.enabled(true)
 				.notExpired(true)
@@ -76,7 +82,7 @@ public class TestDataInitializer {
 			 .email(account1.getEmail())
 			 .mobileNumber("333-7687999")
 			 .name("Marco")
-			 .roles(user1Roles)
+			 //.roles(user1Roles)
 			 .sex("M")
 			 .username(account1.getUsername())
 			 .surname("Di Dionisio")
@@ -86,7 +92,8 @@ public class TestDataInitializer {
 		// ################ Account 2 ####################
 		Account account2 = accountBuilder.username("username-prova-2")
 				.email("topolino@sdfs.it")
-				.password(passwordEncoder.encode("password2"))
+				//.password(passwordEncoder.encode("password2"))
+				.password("password2")
 				.registrationDate(new GregorianCalendar().getTime())
 				.enabled(true)
 				.notExpired(true)
@@ -99,7 +106,7 @@ public class TestDataInitializer {
 				.email(account2.getEmail())
 				.mobileNumber("333-7693456")
 				.name("Daniele")
-				.roles(user2Roles)
+				//.roles(user2Roles)
 				.sex("M")
 				.username(account2.getUsername())
 				.surname("Simonetti")
@@ -111,6 +118,13 @@ public class TestDataInitializer {
 		roleRepo.save(userRole);
 		userRepo.save(user1);
 		userRepo.save(user2);
+		
+		user1.setRole(userRole);
+		user2.setRole(adminRole);
+
+		userRepo.saveAndFlush(user1);
+		userRepo.saveAndFlush(user2);
+
 		
         //transaction.commit();
 	}

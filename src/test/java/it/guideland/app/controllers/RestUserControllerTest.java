@@ -7,6 +7,7 @@ import org.hamcrest.Matchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.guideland.app.config.WebSecurityConfigurationAware;
 import it.guideland.app.dto.TokenData;
+import it.guideland.app.dto.UserRegistrationDTO;
 import it.guideland.app.security.TokenManager;
 import it.guideland.app.utility.TestUtility;
 
@@ -53,4 +57,29 @@ public class RestUserControllerTest extends WebSecurityConfigurationAware {
 		}
 
 	}
+	
+/*	@Test
+	public void createUserTest() throws Exception {
+
+		UserRegistrationDTO userDTO = new UserRegistrationDTO();
+		userDTO.setName("tizio");
+		userDTO.setSurname("sempronio");
+		userDTO.setSurname("testUsername");
+		userDTO.setPassowrd("123456");
+		userDTO.setConfirmPassword("654321");
+		userDTO.setEmail("fgdfg@fdg.it");
+		userDTO.setConfirmEmail("dfgd@asd.it");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonPayload = mapper.writeValueAsString(userDTO); 
+		
+		MvcResult result = mockMvc
+				.perform(post("/api/user/create").contentType(MediaType.APPLICATION_JSON).content(jsonPayload))
+				.andReturn();
+
+		Assert.assertTrue(result.getResponse().getStatus()==400);
+		
+		logger.error(result.getResponse().getContentAsString());
+
+	}*/
 }

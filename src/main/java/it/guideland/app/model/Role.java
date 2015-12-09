@@ -28,16 +28,17 @@ public class Role implements Serializable{
 /*	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "roles")
 	private List<User> users = new ArrayList<>();*/
 	
-	private String role;
+	@Column(unique=true)
+	private String rolename;
 	
 	public Role() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Role(String role) {
+	public Role(String rolename) {
 		super();
-		this.role = role;
+		this.rolename = rolename;
 	}
 
 	public enum RoleType {
@@ -64,12 +65,12 @@ public class Role implements Serializable{
 		this.roleId = roleId;
 	}
 
-	public String getRole() {
-		return role;
+	public String getRolename() {
+		return rolename;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
 	}
 
 }

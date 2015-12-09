@@ -37,7 +37,7 @@ public class User implements Serializable {
 	private String username;
 
 	@JsonIgnore
-	@OneToOne(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "account_fk", referencedColumnName = "account_id")
 	private Account account;
 
@@ -54,11 +54,11 @@ public class User implements Serializable {
 	private String mobileNumber;
 
 	private String skype;
-	
+
 	@Transient
 	@JsonIgnore
 	private String currentPassword;
-	
+
 	@Transient
 	@JsonIgnore
 	private String newPassword;
@@ -68,9 +68,13 @@ public class User implements Serializable {
 	@JoinColumn(name = "photo_fk", referencedColumnName = "photo_id", nullable = true)
 	private Photo profilePhoto;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	/*@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
 	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_fk", referencedColumnName = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_fk", referencedColumnName = "role_id") )
-	private List<Role> roles = new ArrayList<>();
+	private List<Role> roles = new ArrayList<>();*/
+	
+	@OneToOne(targetEntity=Role.class)
+	@JoinColumn(name = "role_fk", referencedColumnName = "role_id", nullable = true)
+	private Role role;
 
 	public Long getUserId() {
 		return userId;
@@ -160,16 +164,14 @@ public class User implements Serializable {
 		this.profilePhoto = profilePhoto;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		for (Role role : roles) {
-			this.roles.add(role);
-		}
+	public void setRole(Role role) {
+		this.role = role;
 	}
-	
+
 	public String getCurrentPassword() {
 		return currentPassword;
 	}
@@ -185,10 +187,9 @@ public class User implements Serializable {
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
-	
-	
-	public void grantRole(Role role) {
-		if(role != null){
+
+/*	public void grantRole(Role role) {
+		if (role != null) {
 			roles.add(role);
 		}
 	}
@@ -197,7 +198,7 @@ public class User implements Serializable {
 		if (roles != null) {
 			roles.remove(role);
 		}
-	}
+	}*/
 
 	public static class UserBuilder {
 		private String username;
@@ -209,7 +210,8 @@ public class User implements Serializable {
 		private String email;
 		private String mobileNumber;
 		private String skype;
-		private List<Role> roles;
+		//private List<Role> roles;
+		private Role role;
 
 		public UserBuilder username(String username) {
 			this.username = username;
@@ -256,8 +258,8 @@ public class User implements Serializable {
 			return this;
 		}
 
-		public UserBuilder roles(List<Role> roles) {
-			this.roles = roles;
+		public UserBuilder role(Role role) {
+			this.role = role;
 			return this;
 		}
 
@@ -272,7 +274,7 @@ public class User implements Serializable {
 			user.setEmail(email);
 			user.setMobileNumber(mobileNumber);
 			user.setSkype(skype);
-			user.setRoles(roles);
+			user.setRole(role);
 			return user;
 		}
 	}

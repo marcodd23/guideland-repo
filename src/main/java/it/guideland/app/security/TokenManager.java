@@ -56,7 +56,7 @@ public class TokenManager {
 		userTokenData.setUsername(user.getUsername());
 		userTokenData.setPassword(user.getAccount().getPassword());
 		userTokenData.setExpirationTime(System.currentTimeMillis() + TEN_DAYS);
-		userTokenData.setRoles(user.getRoles());
+		userTokenData.setRole(user.getRole());
 		byte[] userTokenDataBytes = toJSON(userTokenData);
 		byte[] hash = createHmac(userTokenDataBytes);
 		StringBuilder sb = new StringBuilder();

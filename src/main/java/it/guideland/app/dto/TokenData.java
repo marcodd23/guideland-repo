@@ -10,7 +10,8 @@ public class TokenData {
 	private String username;
 	private String password;
 	private long expirationTime;
-	private List<Role> roles;
+	//private List<Role> roles;
+	private Role role;
 	
 	public long getId() {
 		return id;
@@ -36,12 +37,13 @@ public class TokenData {
 	public void setExpirationTime(long expirationTime) {
 		this.expirationTime = expirationTime;
 	}
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
+
 
 	
 }

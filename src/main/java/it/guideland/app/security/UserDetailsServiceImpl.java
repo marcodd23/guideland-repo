@@ -37,15 +37,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return new UserDetailsImpl(user, authorities);
 	}
 
+	
 	private List<GrantedAuthority> getAuthorities(User user) {
+		Role role = user.getRole();
+		List<GrantedAuthority> authorities = new ArrayList<>(1);
+		if (role != null) {
+			authorities.add(new GrantedAuthorityImpl(role.getRolename()));
+		}
+		return authorities;
+	}
+	
+/*	private List<GrantedAuthority> getAuthorities(User user) {
 		List<Role> roles = user.getRoles();
 		List<GrantedAuthority> authorities = new ArrayList<>(roles == null ? 0 : roles.size());
 		if (roles != null) {
 			for (Role role : roles) {
-				authorities.add(new GrantedAuthorityImpl(role.getRole()));
+				authorities.add(new GrantedAuthorityImpl(role.getRolename()));
 			}
 		}
 		return authorities;
-	}
+	}*/
 
 }

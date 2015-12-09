@@ -61,16 +61,25 @@ public class RestAuthenticationService {
 		}
 		return null;
 	}
-
+	
 	private Collection<GrantedAuthority> getAuthoritiesFromTokenData(TokenData tokenData) {
+		Role role = tokenData.getRole();
+		List<GrantedAuthority> authorities = new ArrayList<>(1);
+		if (role != null) {
+			authorities.add(new GrantedAuthorityImpl(role.getRolename()));
+		}
+		return authorities;
+	}
+
+/*	private Collection<GrantedAuthority> getAuthoritiesFromTokenData(TokenData tokenData) {
 		List<Role> roles = tokenData.getRoles();
 		List<GrantedAuthority> authorities = new ArrayList<>(roles == null ? 0 : roles.size());
 		if (roles != null) {
 			for (Role role : roles) {
-				authorities.add(new GrantedAuthorityImpl(role.getRole()));
+				authorities.add(new GrantedAuthorityImpl(role.getRolename()));
 			}
 		}
 		return authorities;
-	}
+	}*/
 
 }

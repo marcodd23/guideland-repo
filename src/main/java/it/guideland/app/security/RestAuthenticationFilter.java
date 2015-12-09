@@ -29,6 +29,9 @@ public class RestAuthenticationFilter extends GenericFilterBean {
 			throws IOException, ServletException {
 		
 		logger.debug(" >>>>>>>>>>>>>>>>>>>>>>>>>>> RestAuthenticationFilter.doFilter <<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+		
+		HttpServletRequest httprequest = (HttpServletRequest) request;
+		String string = httprequest.getRequestURI();
 		SecurityContextHolder.getContext()
 				.setAuthentication(restAuthenticationService.getAuthentication((HttpServletRequest) request));
 		chain.doFilter(request, response);

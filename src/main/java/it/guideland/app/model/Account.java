@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -20,6 +23,8 @@ public class Account implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 4700342434392039227L;
+	
+	private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Id
 	@Column(name = "account_id")
@@ -84,7 +89,7 @@ public class Account implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = passwordEncoder.encode(password);
 	}
 
 	public Date getLastLogin() {
@@ -179,7 +184,7 @@ public class Account implements Serializable {
 	private Account(AccountBuilder builder) {
 		this.username = builder.username;
 		this.email = builder.email;
-		this.password = builder.password;
+		setPassword(builder.password); 
 		this.registrationDate = builder.registrationDate;
 		this.enabled = builder.enabled;
 		this.notLocked = builder.notLocked;
