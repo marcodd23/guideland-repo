@@ -19,8 +19,8 @@ import it.guideland.app.init.TestDataInitializer;
 
 @Configuration
 @Profile("production")
-public class JPAProductionConfiguration {
-private Logger logger = LoggerFactory.getLogger(JpaDevelopmentConfiguration.class);
+public class JpaProductionConfiguration {
+private Logger logger = LoggerFactory.getLogger(JpaProductionConfiguration.class);
 	
     @Value("${dataSource.jndiName}")
     private String jndiName;
@@ -45,6 +45,12 @@ private Logger logger = LoggerFactory.getLogger(JpaDevelopmentConfiguration.clas
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource datasource) {
 		
     	LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+    	if(datasource != null){
+    		logger.debug(">>>>>>>>> DATASOURCE PRODUCTION EXIST <<<<<<<<<<");
+    	}else{
+    		logger.debug(">>>>>>>>> DATASOURCE PRODUCTION NOT EXIST <<<<<<<<<<");
+    	}
+    	
     	entityManagerFactoryBean.setDataSource(datasource);
     	entityManagerFactoryBean.setPackagesToScan(new String[]{"it.guideland.app.model"});
     	entityManagerFactoryBean.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
