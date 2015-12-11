@@ -19,5 +19,4 @@ public class CustomDateSerializer extends JsonSerializer<Date>{
 			throws IOException, JsonProcessingException {
 		jgen.writeString(formatter.format(value));
 	}
-
 }
