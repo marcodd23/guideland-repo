@@ -7,6 +7,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import it.guideland.app.config.root.JpaDevelopmentConfiguration;
 import it.guideland.app.config.root.JpaTestConfiguration;
+import it.guideland.app.config.root.JpaProductionConfiguration;
 import it.guideland.app.config.root.RootContextConfig;
 import it.guideland.app.config.security.AppSecurityConfig;
 import it.guideland.app.config.servlet.ServletContextConfig;
@@ -18,7 +19,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 	protected Class<?>[] getRootConfigClasses() {
 		// TODO Auto-generated method stub
 		return new Class<?>[] { RootContextConfig.class, JpaDevelopmentConfiguration.class,
-				JpaTestConfiguration.class, AppSecurityConfig.class };
+				JpaTestConfiguration.class, JpaProductionConfiguration.class, AppSecurityConfig.class };
 	}
 
 	@Override
@@ -42,8 +43,8 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 		super.onStartup(servletContext);
 
 		// per settare il profilo attivo
-		servletContext.setInitParameter("spring.profiles.active", "development");
-
+		//servletContext.setInitParameter("spring.profiles.active", "development");
+		 servletContext.setInitParameter("spring.profiles.active", "production");
 		// Set multiple active profile
 		// servletContext.setInitParameter("spring.profiles.active",
 		// "development, testdb");
