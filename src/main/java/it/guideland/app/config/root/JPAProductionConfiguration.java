@@ -52,7 +52,7 @@ private Logger logger = LoggerFactory.getLogger(JpaDevelopmentConfiguration.clas
     	Properties jpaProperties = new Properties();
     	jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
     	jpaProperties.put("hibernate.hbm2ddl.auto", "update");
-        jpaProperties.put("hibernate.show_sql", "false");
+        jpaProperties.put("hibernate.show_sql", "true");
         jpaProperties.put("hibernate.format_sql", "true");
         jpaProperties.put("hibernate.use_sql_comments", "true");
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
