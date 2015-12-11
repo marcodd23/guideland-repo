@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.guideland.app.controllers.validators.UserValidator;
 import it.guideland.app.controllers.validators.utils.ValidatorUtil;
-import it.guideland.app.dto.TokenData;
 import it.guideland.app.dto.UserRegistrationDTO;
 import it.guideland.app.dto.ValidationErrorDTO;
 import it.guideland.app.model.Role;
 import it.guideland.app.model.User;
 import it.guideland.app.repositories.RoleRepository;
 import it.guideland.app.repositories.UserRepository;
+import it.guideland.app.security.TokenData;
 import it.guideland.app.security.UserRestAuthentication;
 import it.guideland.app.services.UserService;
 
@@ -70,8 +70,7 @@ public class UserController {
 		if (authentication instanceof UserRestAuthentication) {
 			TokenData tokenData = (TokenData)((UserRestAuthentication) authentication).getDetails();
 			user = userRepo.findUserByUsername(tokenData.getUsername());
-		}
-		
+		}		
 		//return new User(authentication.getName()); //anonymous user support
 		//return new ResponseEntity<User>(user, HttpStatus.OK);
 		return user;
@@ -86,42 +85,9 @@ public class UserController {
 
 		validator.validate(userDTO, bindingResult, existUsername, existEmail);
 		if(bindingResult.hasErrors()){
-			ValidationErrorDTO errorDTO = validatorUtil.assembleValidationErrorDTO(bindingResult, request);
-			
+			ValidationErrorDTO errorDTO = validatorUtil.assembleValidationErrorDTO(bindingResult, request);	
 			return new ResponseEntity<Object>(errorDTO, HttpStatus.BAD_REQUEST);
 		}else{
-			/*UserBuilder userBuilder = new UserBuilder();
-			AccountBuilder accountBuilder = new AccountBuilder();
-			
-			Role role = roleRepo.findByRolename(RoleType.USER.toString());		
-			List<Role> userRoles = new ArrayList<>();
-			userRoles.add(role);
-			//userRoles.add(new Role(RoleType.USER.toString()))
-			
-			Account account = accountBuilder.username(userDTO.getUsername())
-					.email(userDTO.getEmail())
-					.password(userDTO.getPassword())
-					.registrationDate(new GregorianCalendar().getTime())
-					.enabled(true)
-					.notExpired(true)
-					.notLocked(true)
-					.build();
-			
-			
-			User user = userBuilder.account(account)
-				 .bornDate(new GregorianCalendar(1983, GregorianCalendar.APRIL, 23).getTime())
-				 .email(account.getEmail())
-				 .mobileNumber("")
-				 .name(userDTO.getName())
-				 .roles(userRoles)
-				 .sex("")
-				 .username(account.getUsername())
-				 .surname(userDTO.getSurname())
-				 .skype("")
-			     .build();
-			
-			user = userRepo.saveAndFlush(user);*/
-			
 			User user = UserService.createNewUser(userDTO);
 			return new ResponseEntity<Object>(user, HttpStatus.OK);
 		}

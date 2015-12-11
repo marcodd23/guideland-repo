@@ -1,5 +1,14 @@
 package it.guideland.app.dto;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import it.guideland.app.model.Language;
+import it.guideland.app.utils.CustomDateDeserializer;
+
 public class UserRegistrationDTO {
 
 	private String name;
@@ -9,6 +18,14 @@ public class UserRegistrationDTO {
 	private String confirmEmail;
 	private String password;
 	private String confirmPassword;
+	private List<String> languages = new ArrayList<>();
+	@JsonDeserialize(using=CustomDateDeserializer.class)
+	private Date bornDate;
+	private String city;
+	private String telephone;
+	private int hourlyRate;
+	private String description;
+ 
 	
 	public String getName() {
 		return name;

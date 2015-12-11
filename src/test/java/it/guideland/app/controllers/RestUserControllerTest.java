@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.guideland.app.config.WebSecurityConfigurationAware;
-import it.guideland.app.dto.TokenData;
 import it.guideland.app.dto.UserRegistrationDTO;
+import it.guideland.app.security.TokenData;
 import it.guideland.app.security.TokenManager;
 import it.guideland.app.utility.TestUtility;
 

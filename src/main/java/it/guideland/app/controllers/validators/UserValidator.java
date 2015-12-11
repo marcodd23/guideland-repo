@@ -2,23 +2,17 @@ package it.guideland.app.controllers.validators;
 
 import java.util.regex.Pattern;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import it.guideland.app.dto.UserRegistrationDTO;
-import it.guideland.app.model.User;
-import it.guideland.app.repositories.UserRepository;
 
 @Component
 public class UserValidator implements Validator {
 
-	@Autowired
-	private UserRepository userRepo;
-
-	private final String emailRegex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+	private final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	/*
@@ -30,7 +24,7 @@ public class UserValidator implements Validator {
 	 * "@#$%" . # match anything with previous condition checking 
 	 * {6,20} # length at least 6 characters and maximum of 20 )
 	 */
-	private final String passwordRegex = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
+	private final String PASSWORD_REGEX = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
 
 	private Pattern patternEmail;
 	private Pattern patternPassw;
@@ -48,8 +42,8 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors, boolean existUsername, boolean existEmail) {
 
 		UserRegistrationDTO userDTO = (UserRegistrationDTO) target;
-		patternEmail = Pattern.compile(emailRegex);
-		patternPassw = Pattern.compile(passwordRegex);
+		patternEmail = Pattern.compile(EMAIL_REGEX);
+		patternPassw = Pattern.compile(PASSWORD_REGEX);
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "errors.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "errors.required");

@@ -30,7 +30,7 @@ public class LocaleResolverImpl extends AcceptHeaderLocaleResolver{
 			resolved = new Locale(request.getHeader("lang"));
 		}
 		
-/*		List<SupportedLanguage> langs = supportedLanguageRepo.findAll();
+    	List<SupportedLanguage> langs = supportedLanguageRepo.findAll();
 		boolean supported = false;
 		for (SupportedLanguage lang : langs) {
 			if(resolved.equals(new Locale(lang.getLangId()))){
@@ -40,17 +40,7 @@ public class LocaleResolverImpl extends AcceptHeaderLocaleResolver{
 		}
 		if(!supported){
 			return Locale.ENGLISH;
-		}*/
-		/*List<Language> list = lanDS.getAll();
-	       boolean supported = false;
-	       for (Language l : list) {
-	           if (resolved.equals(new Locale(l.getResourceId()))) {
-	               supported = true;
-	               break;
-	           }
-	       }
-	       
-	       if (!supported) return Locale.ENGLISH;*/
+		}
 	
 		return resolved;
 	}

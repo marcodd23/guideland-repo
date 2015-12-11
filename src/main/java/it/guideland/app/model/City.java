@@ -25,6 +25,15 @@ public class City implements Serializable{
 	@Column(unique=true)
 	private String name;
 	
+	public City() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public City(String name) {
+		super();
+		this.name = name;
+	}
 	public Long getCityId() {
 		return cityId;
 	}

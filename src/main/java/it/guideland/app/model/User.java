@@ -19,6 +19,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import it.guideland.app.utils.CustomDateSerializer;
 
 @Entity
 @Table(name = "USERS")
@@ -45,6 +48,7 @@ public class User implements Serializable {
 
 	private String surname;
 
+	@JsonSerialize(using=CustomDateSerializer.class)
 	private Date bornDate;
 
 	private String sex;

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="supported_languages")
+@Table(name="SUPPORTED_LANGUAGES")
 public class SupportedLanguage implements Serializable{
 
 	
@@ -21,7 +21,13 @@ public class SupportedLanguage implements Serializable{
 	@Column(name="lang_id")
 	private String langId;
 
+	@Column(unique=true)
 	private String languageName;
+
+	public SupportedLanguage() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public SupportedLanguage(String langId, String languageName) {
 		super();

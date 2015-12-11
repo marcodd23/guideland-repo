@@ -10,18 +10,19 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.guideland.app.model.Account;
 import it.guideland.app.model.Account.AccountBuilder;
+import it.guideland.app.model.City;
 import it.guideland.app.model.Role;
 import it.guideland.app.model.Role.RoleType;
 import it.guideland.app.model.SupportedLanguage;
 import it.guideland.app.model.User;
 import it.guideland.app.model.User.UserBuilder;
+import it.guideland.app.repositories.CityRepository;
 import it.guideland.app.repositories.RoleRepository;
+import it.guideland.app.repositories.SupportedLanguageRepository;
 import it.guideland.app.repositories.UserRepository;
 
 @Service
@@ -38,6 +39,12 @@ public class TestDataInitializer {
 	
 	@Autowired
 	private RoleRepository roleRepo;
+	
+	@Autowired
+	private SupportedLanguageRepository supportedLanguageRepo;
+	
+	@Autowired
+	private CityRepository cityRepo;
 	
 	@Transactional
 	public void init() throws Exception {
@@ -58,8 +65,25 @@ public class TestDataInitializer {
 		List<Role> user2Roles = new ArrayList<>();
 		user2Roles.add(userRole);
 		
+		SupportedLanguage supportedLanguage1 = new SupportedLanguage(Locale.ITALIAN.getLanguage(), "Italian");
+		SupportedLanguage supportedLanguage2 = new SupportedLanguage(Locale.ENGLISH.getLanguage(), "English");
+		
+		supportedLanguage1 = supportedLanguageRepo.save(supportedLanguage1);
+		supportedLanguage2 = supportedLanguageRepo.save(supportedLanguage2);
+		
 		List<SupportedLanguage> langs = new ArrayList<>();
-		langs.add(new SupportedLanguage(Locale.ITALIAN.getLanguage(), "Italian"));
+		langs.add(supportedLanguage1);
+		langs.add(supportedLanguage2);
+		
+		City milan = new City("Milano");
+		City madrid = new City("Madrid");
+		City hamburg = new City("Hamburg");
+		City berlin = new City("Berlin");
+		
+		cityRepo.save(milan);
+		cityRepo.save(madrid);
+		cityRepo.save(hamburg);
+		cityRepo.save(berlin);
 		
 		UserBuilder userBuilder = new UserBuilder();
 		AccountBuilder accountBuilder = new AccountBuilder();
@@ -112,7 +136,9 @@ public class TestDataInitializer {
 				.surname("Simonetti")
 				.skype("daniele.simonetti")
 				.build();
-								
+			
+		
+		
 		
 		roleRepo.save(adminRole);
 		roleRepo.save(userRole);
