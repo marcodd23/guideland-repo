@@ -21,7 +21,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
-
 public class RestLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	Logger logger = LoggerFactory.getLogger(RestLoginFilter.class);
@@ -36,8 +35,9 @@ public class RestLoginFilter extends AbstractAuthenticationProcessingFilter {
 	private UserDetailsServiceImpl userDetailsServiceImpl;
 
 	public RestLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager,
-			RestAuthenticationFailureHandler restAuthenticationFailureHandler, RestAuthenticationSuccessHandler restAuthenticationSuccessHandler, RestAuthenticationService restAuthenticationService,
-			UserDetailsServiceImpl userDetailsServiceImpl) {
+			RestAuthenticationFailureHandler restAuthenticationFailureHandler,
+			RestAuthenticationSuccessHandler restAuthenticationSuccessHandler,
+			RestAuthenticationService restAuthenticationService, UserDetailsServiceImpl userDetailsServiceImpl) {
 		super(defaultFilterProcessesUrl);
 		// this.restAuthenticationService = restAuthenticationService;
 		// this.userDetailsService = userDetailsService;
@@ -91,17 +91,18 @@ public class RestLoginFilter extends AbstractAuthenticationProcessingFilter {
 			Authentication authentication) throws IOException, ServletException {
 
 		logger.debug(">>>>>>>>>>>>>>>>>>>>>> RestLoginFilter.successfulAuthentication <<<<<<<<<<<<<<<<<<<<<<");
-		UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsServiceImpl.loadUserByUsername(authentication.getName());
+		UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsServiceImpl
+				.loadUserByUsername(authentication.getName());
 		restAuthenticationService.addAuthenticationToken(response, userDetails);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		getSuccessHandler().onAuthenticationSuccess(request, response, authentication);
 	}
 
-/*	@Override
-	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException failed) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		super.unsuccessfulAuthentication(request, response, failed);
-	}*/
+	/*
+	 * @Override protected void unsuccessfulAuthentication(HttpServletRequest
+	 * request, HttpServletResponse response, AuthenticationException failed)
+	 * throws IOException, ServletException { // TODO Auto-generated method stub
+	 * super.unsuccessfulAuthentication(request, response, failed); }
+	 */
 
 }

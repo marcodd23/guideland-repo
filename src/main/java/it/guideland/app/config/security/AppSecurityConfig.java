@@ -43,9 +43,16 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and().csrf().disable()
-				.formLogin().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.exceptionHandling().and().anonymous().and().headers().cacheControl().and().authorizeRequests()
+		http.exceptionHandling()
+		.authenticationEntryPoint(restAuthenticationEntryPoint)
+		.and()
+		.csrf().disable()
+				
+		.formLogin().disable()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.exceptionHandling()
+		.and().anonymous().and().headers().cacheControl().and().authorizeRequests()
 
 				.antMatchers("/private/hello").hasRole("USER")
 				// .antMatchers("/favicon.ico").permitAll()
@@ -54,14 +61,14 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 				
-				.antMatchers(HttpMethod.POST, "/api/user/create").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/registration/**").permitAll()
 
 				.antMatchers(HttpMethod.GET, "/api/login").denyAll()
 
 				// allow anonymous GETs to API
 				//.antMatchers("/api/**").authenticated()
 				
-				.antMatchers("/api/user/current").authenticated()
+				.antMatchers("/api/auth/**").authenticated()
 				
 				.antMatchers("/api/user/create").permitAll()
 

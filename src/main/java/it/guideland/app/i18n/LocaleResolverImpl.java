@@ -7,19 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
-import it.guideland.app.model.Language;
 import it.guideland.app.model.SupportedLanguage;
-import it.guideland.app.repositories.LanguageRepository;
-import it.guideland.app.repositories.SupportedLanguageRepository;
+import it.guideland.app.services.SupportedLanguageService;
 
 
 
 public class LocaleResolverImpl extends AcceptHeaderLocaleResolver{
-
+	
 	@Autowired
-	SupportedLanguageRepository supportedLanguageRepo;
+	SupportedLanguageService supportedLanguageService;
 	
 	@Override
 	public Locale resolveLocale(HttpServletRequest request) {
@@ -30,7 +27,7 @@ public class LocaleResolverImpl extends AcceptHeaderLocaleResolver{
 			resolved = new Locale(request.getHeader("lang"));
 		}
 		
-    	List<SupportedLanguage> langs = supportedLanguageRepo.findAll();
+    	List<SupportedLanguage> langs = supportedLanguageService.findAllSupportedLanguages();
 		boolean supported = false;
 		for (SupportedLanguage lang : langs) {
 			if(resolved.equals(new Locale(lang.getLangId()))){

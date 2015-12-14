@@ -1,16 +1,23 @@
 package it.guideland.app.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "GUIDES")
@@ -33,6 +40,10 @@ public class Guide implements Serializable{
 	@ManyToOne(targetEntity = City.class)
 	@JoinColumn(name="city_fk", referencedColumnName="city_id")
 	private City city;
+	
+	@OneToMany(targetEntity=GuideInterest.class, fetch = FetchType.LAZY, mappedBy ="pk.guide", cascade = 
+	    {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<GuideInterest> guideInterests = new ArrayList<>();
 	
 	private String description;
 	
@@ -84,4 +95,14 @@ public class Guide implements Serializable{
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
 	}
+	public List<GuideInterest> getGuideInterests() {
+		return guideInterests;
+	}
+	public void setGuideInterests(List<GuideInterest> guideInterests) {
+		this.guideInterests = guideInterests;
+	}
+	public void addGuideInterest(GuideInterest guideInterest){
+		this.guideInterests.add(guideInterest);
+	}
+
 }

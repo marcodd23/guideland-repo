@@ -43,8 +43,8 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 		super.onStartup(servletContext);
 
 		// per settare il profilo attivo
-		//servletContext.setInitParameter("spring.profiles.active", "development");
-		 servletContext.setInitParameter("spring.profiles.active", "production");
+		servletContext.setInitParameter("spring.profiles.active", "development");
+		//servletContext.setInitParameter("spring.profiles.active", "production");
 		// Set multiple active profile
 		// servletContext.setInitParameter("spring.profiles.active",
 		// "development, testdb");

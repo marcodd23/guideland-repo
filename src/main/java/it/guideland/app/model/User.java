@@ -37,12 +37,14 @@ public class User implements Serializable {
 	@GeneratedValue
 	private Long userId;
 
-	private String username;
+	private String usernameEmail;
 
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "account_fk", referencedColumnName = "account_id")
 	private Account account;
+	
+	private String alternativeEmail;
 
 	private String name;
 
@@ -52,8 +54,6 @@ public class User implements Serializable {
 	private Date bornDate;
 
 	private String sex;
-
-	private String email;
 
 	private String mobileNumber;
 
@@ -84,113 +84,195 @@ public class User implements Serializable {
 		return userId;
 	}
 
+
+
+
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	public String getUsername() {
-		return username;
+
+
+
+	public String getUsernameEmail() {
+		return usernameEmail;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+
+
+
+	public void setUsernameEmail(String usernameEmail) {
+		this.usernameEmail = usernameEmail;
 	}
+
+
+
 
 	public Account getAccount() {
 		return account;
 	}
 
+
+
+
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+
+
+
+
+	public String getAlternativeEmail() {
+		return alternativeEmail;
+	}
+
+
+
+
+	public void setAlternativeEmail(String alternativeEmail) {
+		this.alternativeEmail = alternativeEmail;
+	}
+
+
+
 
 	public String getName() {
 		return name;
 	}
 
+
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
+
 
 	public String getSurname() {
 		return surname;
 	}
 
+
+
+
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
+
+
+
 
 	public Date getBornDate() {
 		return bornDate;
 	}
 
+
+
+
 	public void setBornDate(Date bornDate) {
 		this.bornDate = bornDate;
 	}
+
+
+
 
 	public String getSex() {
 		return sex;
 	}
 
+
+
+
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
 
-	public String getEmail() {
-		return email;
-	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+
 
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
 
+
+
+
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
+
+
+
 
 	public String getSkype() {
 		return skype;
 	}
 
+
+
+
 	public void setSkype(String skype) {
 		this.skype = skype;
 	}
 
-	public Photo getProfilePhoto() {
-		return profilePhoto;
-	}
 
-	public void setProfilePhoto(Photo profilePhoto) {
-		this.profilePhoto = profilePhoto;
-	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
 
 	public String getCurrentPassword() {
 		return currentPassword;
 	}
 
+
+
+
 	public void setCurrentPassword(String currentPassword) {
 		this.currentPassword = currentPassword;
 	}
+
+
+
 
 	public String getNewPassword() {
 		return newPassword;
 	}
 
+
+
+
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
+
+
+
+
+	public Photo getProfilePhoto() {
+		return profilePhoto;
+	}
+
+
+
+
+	public void setProfilePhoto(Photo profilePhoto) {
+		this.profilePhoto = profilePhoto;
+	}
+
+
+
+
+	public Role getRole() {
+		return role;
+	}
+
+
+
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 
 /*	public void grantRole(Role role) {
 		if (role != null) {
@@ -204,21 +286,21 @@ public class User implements Serializable {
 		}
 	}*/
 
+
 	public static class UserBuilder {
-		private String username;
+		private String usernameEmail;
 		private Account account;
 		private String name;
 		private String surname;
 		private Date bornDate;
 		private String sex;
-		private String email;
 		private String mobileNumber;
 		private String skype;
 		//private List<Role> roles;
 		private Role role;
 
-		public UserBuilder username(String username) {
-			this.username = username;
+		public UserBuilder usernameEmail(String usernameEmail) {
+			this.usernameEmail = usernameEmail;
 			return this;
 		}
 
@@ -247,11 +329,6 @@ public class User implements Serializable {
 			return this;
 		}
 
-		public UserBuilder email(String email) {
-			this.email = email;
-			return this;
-		}
-
 		public UserBuilder mobileNumber(String mobileNumber) {
 			this.mobileNumber = mobileNumber;
 			return this;
@@ -269,13 +346,12 @@ public class User implements Serializable {
 
 		public User build() {
 			User user = new User();
-			user.setUsername(username);
+			user.setUsernameEmail(usernameEmail);
 			user.setAccount(account);
 			user.setName(name);
 			user.setSurname(surname);
 			user.setBornDate(bornDate);
 			user.setSex(sex);
-			user.setEmail(email);
 			user.setMobileNumber(mobileNumber);
 			user.setSkype(skype);
 			user.setRole(role);

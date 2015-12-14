@@ -38,7 +38,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void postLoginWithWrongCredentialsAuthorizationHeaderTest() throws Exception {
 		mockMvc.perform(post("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "incorrectpassword"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username1@prova.it", "incorrectpassword"))
 				).andExpect(status().isUnauthorized());
 	}
 
@@ -47,7 +47,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void getLoginWithWrongCredentialsAuthorizationHeaderTest() throws Exception {
 		mockMvc.perform(get("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "incorrectpassword"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username1@prova.it", "incorrectpassword"))
 				).andExpect(status().isUnauthorized());
 	}
 	
@@ -55,7 +55,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void postLoginWithWrongCredentialsUsernamPasswordHeaderTest() throws Exception {
 		mockMvc.perform(post("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HEADER_USERNAME, "username-prova-1")
+				.header(HEADER_USERNAME, "username1@prova.it")
 				.header(HEADER_PASSWORD, "incorrectpassword")
 				).andExpect(status().isUnauthorized());
 	}
@@ -64,7 +64,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void getLoginWithWrongCredentialsUsernamPasswordHeaderTest() throws Exception {
 		mockMvc.perform(get("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HEADER_USERNAME, "username-prova-1")
+				.header(HEADER_USERNAME, "username1@prova.it")
 				.header(HEADER_PASSWORD, "incorrectpassword")
 				).andExpect(status().isUnauthorized());
 	}
@@ -75,7 +75,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void postLoginWithCorrectCredentialsAuthorizationHeaderTest() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(post("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "password1"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username1@prova.it", "password1"))
 				).andReturn();
 		Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
         String token = mvcResult.getResponse().getHeader(HEADER_TOKEN);
@@ -89,7 +89,7 @@ public class RestAuthenticationIntegrationTest extends WebSecurityConfigurationA
 	public void getLoginWithCorrectCredentialsAuthorizationHeaderTest() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get("/api/login")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username-prova-1", "password1"))
+				.header(HttpHeaders.AUTHORIZATION, TestUtility.createAuthorizationHeader("username1@prova.it", "password1"))
 				).andReturn();
 		Assert.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
         String token = mvcResult.getResponse().getHeader(HEADER_TOKEN);

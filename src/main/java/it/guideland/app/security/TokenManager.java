@@ -52,7 +52,7 @@ public class TokenManager {
 	public String createTokenForUser(User user) {
 		TokenData userTokenData = new TokenData();
 		userTokenData.setId(user.getUserId());
-		userTokenData.setUsername(user.getUsername());
+		userTokenData.setUsernameEmail(user.getUsernameEmail());
 		userTokenData.setPassword(user.getAccount().getPassword());
 		userTokenData.setExpirationTime(System.currentTimeMillis() + TEN_DAYS);
 		userTokenData.setRole(user.getRole());

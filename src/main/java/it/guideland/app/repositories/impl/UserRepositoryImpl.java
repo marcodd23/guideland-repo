@@ -14,15 +14,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	private EntityManager em;
 	
 	@Override
-	public boolean existAlreadyUsername(String username) {
-	    String search = "SELECT u.userId FROM User u WHERE u.username = '" + username + "'";
-	    boolean exist = !em.createQuery(search).getResultList().isEmpty();
-	    return exist;
-	}
-	
-	@Override
-	public boolean existAlreadyEmail(String email){
-	    String search = "SELECT u.userId FROM User u WHERE u.email = '" + email + "'";
+	public boolean existAlreadyUsernameEmail(String usernameEmail){
+	    String search = "SELECT u.userId FROM User u WHERE u.usernameEmail = '" + usernameEmail + "'";
 	    boolean exist = !em.createQuery(search).getResultList().isEmpty();
 	    return exist;
 	}

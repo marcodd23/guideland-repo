@@ -39,7 +39,7 @@ public class UserValidator implements Validator {
 
 	}
 
-	public void validate(Object target, Errors errors, boolean existUsername, boolean existEmail) {
+	public void validate(Object target, Errors errors, boolean existUsernameEmail) {
 
 		UserRegistrationDTO userDTO = (UserRegistrationDTO) target;
 		patternEmail = Pattern.compile(EMAIL_REGEX);
@@ -47,8 +47,7 @@ public class UserValidator implements Validator {
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "errors.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "errors.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "errors.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "errors.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "usernameEmail", "errors.required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "errors.required");
 
 		if (!patternEmail.matcher(userDTO.getEmail()).matches()) {
@@ -65,11 +64,8 @@ public class UserValidator implements Validator {
 		if (!userDTO.getEmail().equals(userDTO.getConfirmEmail())) {
 			errors.rejectValue("email", "errors.notmatch.email");
 		}
-		if (existUsername) {
+		if (existUsernameEmail) {
 			errors.rejectValue("username", "errors.username.already.exist");
-		}
-		if (existEmail) {
-			errors.rejectValue("email", "errors.email.already.exist");
 		}
 	}
 

@@ -37,7 +37,7 @@ public class RestUserControllerTest extends WebSecurityConfigurationAware {
 
 		MvcResult loginResult = mockMvc
 				.perform(post("/api/login").contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,
-						TestUtility.createAuthorizationHeader("username-prova-1", "password1")))
+						TestUtility.createAuthorizationHeader("username1@prova.it", "password1")))
 				.andReturn();
 
 		String token = loginResult.getResponse().getHeader(HEADER_TOKEN);
@@ -45,10 +45,10 @@ public class RestUserControllerTest extends WebSecurityConfigurationAware {
 			TokenData tokenData = tokenManager.validateUserFromToken(token);
 
 			mockMvc.perform(
-					get("/api/user/current").contentType(MediaType.APPLICATION_JSON).header(HEADER_TOKEN, token))
+					get("/api/auth/user/current").contentType(MediaType.APPLICATION_JSON).header(HEADER_TOKEN, token))
 					.andExpect(status().is2xxSuccessful())
 					.andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-					.andExpect(MockMvcResultMatchers.jsonPath("$.username", Matchers.is(tokenData.getUsername())))
+					.andExpect(MockMvcResultMatchers.jsonPath("$.usernameEmail", Matchers.is(tokenData.getUsernameEmail())))
 					.andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Marco")))
 					.andExpect(MockMvcResultMatchers.jsonPath("$.surname", Matchers.is("Di Dionisio")))
 					.andExpect(MockMvcResultMatchers.jsonPath("$.mobileNumber", Matchers.is("333-7687999")));

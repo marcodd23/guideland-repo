@@ -81,7 +81,7 @@ public class JpaTestConfiguration {
     	entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter()); 
     	Properties jpaProperties = new Properties();
     	jpaProperties.put("hibernate.dialect", dialect);
-    	jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+    	jpaProperties.put("hibernate.hbm2ddl.auto", "create-drop");
         jpaProperties.put("hibernate.show_sql", "false");
         jpaProperties.put("hibernate.format_sql", "true");
         jpaProperties.put("hibernate.use_sql_comments", "true");

@@ -7,7 +7,7 @@ import it.guideland.app.model.Role;
 public class TokenData {
 
 	private long id;
-	private String username;
+	private String usernameEmail;
 	private String password;
 	private long expirationTime;
 	//private List<Role> roles;
@@ -19,11 +19,11 @@ public class TokenData {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getUsername() {
-		return username;
+	public String getUsernameEmail() {
+		return usernameEmail;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsernameEmail(String usernameEmail) {
+		this.usernameEmail = usernameEmail;
 	}
 	public String getPassword() {
 		return password;
@@ -43,7 +43,5 @@ public class TokenData {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-
-
 	
 }

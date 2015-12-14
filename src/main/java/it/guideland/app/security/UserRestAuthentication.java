@@ -33,7 +33,7 @@ public class UserRestAuthentication extends AbstractAuthenticationToken{
 	}
 	@Override
 	public Object getPrincipal() {
-		return tokenData.getUsername();
+		return tokenData.getUsernameEmail();
 	}
 	@Override
 	public boolean isAuthenticated() {

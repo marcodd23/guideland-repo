@@ -175,6 +175,12 @@
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -191,7 +197,7 @@
 				<version>2.2</version>
 				<configuration>
 					<url>http://localhost:8080/manager/text</url>
-			        <server>TomcatServer</server>
+					<server>TomcatServer</server>
 					<path>/guideland</path>
 				</configuration>
 			</plugin>

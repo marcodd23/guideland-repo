@@ -31,14 +31,11 @@ public class Account implements Serializable {
 	@GeneratedValue
 	private Long accountId;
 
-	@Column(unique = true)
-	private String username;
-
 	/*	@OneToOne(mappedBy = "account")
 		private User user;*/
 
 	@Column(unique = true)
-	private String email;
+	private String usernameEmail;
 
 	@JsonIgnore
 	private String password;
@@ -68,20 +65,12 @@ public class Account implements Serializable {
 		this.accountId = accountId;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUsernameEmail() {
+		return usernameEmail;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsernameEmail(String usernameEmail) {
+		this.usernameEmail = usernameEmail;
 	}
 
 	public String getPassword() {
@@ -133,21 +122,15 @@ public class Account implements Serializable {
 	}
 
 	public static class AccountBuilder {
-		private String username;
-		private String email;
+		private String usernameEmail;
 		private String password;
 		private Date registrationDate;
 		private boolean enabled;
 		private boolean notLocked;
 		private boolean notExpired;
 
-		public AccountBuilder username(String username) {
-			this.username = username;
-			return this;
-		}
-
-		public AccountBuilder email(String email) {
-			this.email = email;
+		public AccountBuilder usernameEmail(String usernameEmail) {
+			this.usernameEmail = usernameEmail;
 			return this;
 		}
 
@@ -182,8 +165,7 @@ public class Account implements Serializable {
 	}
 
 	private Account(AccountBuilder builder) {
-		this.username = builder.username;
-		this.email = builder.email;
+		this.usernameEmail = builder.usernameEmail;
 		setPassword(builder.password); 
 		this.registrationDate = builder.registrationDate;
 		this.enabled = builder.enabled;

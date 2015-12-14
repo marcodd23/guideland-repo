@@ -15,21 +15,22 @@ import org.springframework.stereotype.Service;
 import it.guideland.app.model.Role;
 import it.guideland.app.model.User;
 import it.guideland.app.repositories.UserRepository;
+import it.guideland.app.services.UserService;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
-	
+
 	@Autowired
-	private UserRepository userRepo;
+	private UserService userService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		logger.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<< UserDetailsServiceImpl.loadUserByUsername >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		User user;
-		user = userRepo.findUserByUsername(username);
+		user = userService.findUserByUsernameEmail(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}

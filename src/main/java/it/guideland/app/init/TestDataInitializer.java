@@ -15,15 +15,23 @@ import org.springframework.stereotype.Service;
 import it.guideland.app.model.Account;
 import it.guideland.app.model.Account.AccountBuilder;
 import it.guideland.app.model.City;
+import it.guideland.app.model.Guide;
+import it.guideland.app.model.GuideInterest;
+import it.guideland.app.model.GuideInterestId;
+import it.guideland.app.model.Interest;
 import it.guideland.app.model.Role;
 import it.guideland.app.model.Role.RoleType;
 import it.guideland.app.model.SupportedLanguage;
 import it.guideland.app.model.User;
 import it.guideland.app.model.User.UserBuilder;
 import it.guideland.app.repositories.CityRepository;
+import it.guideland.app.repositories.GuideRepository;
+import it.guideland.app.repositories.InterestRepository;
 import it.guideland.app.repositories.RoleRepository;
 import it.guideland.app.repositories.SupportedLanguageRepository;
-import it.guideland.app.repositories.UserRepository;
+import it.guideland.app.services.RoleService;
+import it.guideland.app.services.SupportedLanguageService;
+import it.guideland.app.services.UserService;
 
 @Service
 public class TestDataInitializer {
@@ -35,16 +43,22 @@ public class TestDataInitializer {
 	private EntityManager em;*/
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserService userService;
 	
 	@Autowired
-	private RoleRepository roleRepo;
+	private RoleService roleService;
 	
 	@Autowired
-	private SupportedLanguageRepository supportedLanguageRepo;
+	private SupportedLanguageService supportedLanguageService;
 	
 	@Autowired
 	private CityRepository cityRepo;
+	
+	@Autowired
+	private InterestRepository interestRepo;
+	
+	@Autowired
+	private GuideRepository guideRepo;
 	
 	@Transactional
 	public void init() throws Exception {
@@ -68,30 +82,22 @@ public class TestDataInitializer {
 		SupportedLanguage supportedLanguage1 = new SupportedLanguage(Locale.ITALIAN.getLanguage(), "Italian");
 		SupportedLanguage supportedLanguage2 = new SupportedLanguage(Locale.ENGLISH.getLanguage(), "English");
 		
-		supportedLanguage1 = supportedLanguageRepo.save(supportedLanguage1);
-		supportedLanguage2 = supportedLanguageRepo.save(supportedLanguage2);
+		supportedLanguage1 = supportedLanguageService.persistSuppLanguage(supportedLanguage1);
+		supportedLanguage2 = supportedLanguageService.persistSuppLanguage(supportedLanguage2);
 		
 		List<SupportedLanguage> langs = new ArrayList<>();
 		langs.add(supportedLanguage1);
 		langs.add(supportedLanguage2);
 		
-		City milan = new City("Milano");
-		City madrid = new City("Madrid");
-		City hamburg = new City("Hamburg");
-		City berlin = new City("Berlin");
+
 		
-		cityRepo.save(milan);
-		cityRepo.save(madrid);
-		cityRepo.save(hamburg);
-		cityRepo.save(berlin);
 		
 		UserBuilder userBuilder = new UserBuilder();
 		AccountBuilder accountBuilder = new AccountBuilder();
 		//PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		// ################ Account 1 ####################
-		Account account1 = accountBuilder.username("username-prova-1")
-				.email("pippo@sdfs.it")
+		Account account1 = accountBuilder.usernameEmail("username1@prova.it")
 				//.password(passwordEncoder.encode("password1"))
 				.password("password1")
 				.registrationDate(new GregorianCalendar().getTime())
@@ -103,19 +109,17 @@ public class TestDataInitializer {
 		
 		User user1 = userBuilder.account(account1)
 			 .bornDate(new GregorianCalendar(1983, GregorianCalendar.APRIL, 23).getTime())
-			 .email(account1.getEmail())
 			 .mobileNumber("333-7687999")
 			 .name("Marco")
 			 //.roles(user1Roles)
 			 .sex("M")
-			 .username(account1.getUsername())
+			 .usernameEmail(account1.getUsernameEmail())
 			 .surname("Di Dionisio")
 			 .skype("marco.didionisio")
 		     .build();
 		
 		// ################ Account 2 ####################
-		Account account2 = accountBuilder.username("username-prova-2")
-				.email("topolino@sdfs.it")
+		Account account2 = accountBuilder.usernameEmail("username2@prova.it")
 				//.password(passwordEncoder.encode("password2"))
 				.password("password2")
 				.registrationDate(new GregorianCalendar().getTime())
@@ -127,31 +131,71 @@ public class TestDataInitializer {
 
 		User user2 = userBuilder.account(account2)
 				.bornDate(new GregorianCalendar(1987, GregorianCalendar.AUGUST, 4).getTime())
-				.email(account2.getEmail())
 				.mobileNumber("333-7693456")
 				.name("Daniele")
 				//.roles(user2Roles)
 				.sex("M")
-				.username(account2.getUsername())
+				.usernameEmail(account2.getUsernameEmail())
 				.surname("Simonetti")
 				.skype("daniele.simonetti")
 				.build();
 			
 		
 		
-		
-		roleRepo.save(adminRole);
-		roleRepo.save(userRole);
-		userRepo.save(user1);
-		userRepo.save(user2);
+		roleService.persistRoleAndFlush(adminRole);
+		roleService.persistRoleAndFlush(userRole);
+		userService.persistUser(user1);
+		userService.persistUser(user2);
 		
 		user1.setRole(userRole);
 		user2.setRole(adminRole);
 
-		userRepo.saveAndFlush(user1);
-		userRepo.saveAndFlush(user2);
-
+		userService.persistUserAndFlush(user1);
+		userService.persistUserAndFlush(user2);
+		
+		//################################ CITTA' e INTERESSI ###################################
+		
+		City milan = new City("Milano");
+		City madrid = new City("Madrid");
+		City hamburg = new City("Hamburg");
+		City berlin = new City("Berlin");
+		
+		milan = cityRepo.save(milan);
+		madrid = cityRepo.save(madrid);
+		hamburg = cityRepo.save(hamburg);
+		berlin = cityRepo.save(berlin);
+		
+		Interest interest1 = new Interest();
+		interest1.setInteresName("interesse 1");
+		interest1 = interestRepo.save(interest1);
+		Interest interest2 = new Interest();
+		interest2.setInteresName("interesse 2");
+		interest2 = interestRepo.save(interest2);
+		Interest interest3 = new Interest();
+		interest3.setInteresName("interesse 3");
+		interest3 = interestRepo.save(interest3);
+		
+		Guide guide1 = new Guide();
+		guide1.setCity(milan);
+		guide1.setDescription("dfgsdfgsdfgsdfg");
+		guide1.setHourlyRate("100");
+		guide1.setRegistrationDate(user1.getAccount().getRegistrationDate());
+		guide1.setUser(user1);
+		
+		GuideInterest guideInterest = new GuideInterest();
+		guideInterest.setGuide(guide1);
+		guideInterest.setInterest(interest1);
+		guideInterest.setScore(200);
+		
+		guide1.getGuideInterests().add(guideInterest);
+		
+		guideRepo.saveAndFlush(guide1);
 		
         //transaction.commit();
+	
+		
+
+		
+	
 	}
 }
